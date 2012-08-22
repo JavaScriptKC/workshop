@@ -1,0 +1,48 @@
+Hey,
+
+Yeah, it was a 2 day event which I think is important.  We hosted it at
+UMKC, they were very receptive and a great host, they might be able to help
+you out as well.
+
+First night schedule went like this:
+
+   - Intro about the group / workshop.  Quick example of tutorial
+   - All members went through a self-guided tutorial to setup Python on
+   their system and walk though a set of exercises to get familiar with the
+   language.
+   - Once they completed that they just had to check off with an aide and
+   they were free to go.
+
+We followed this material on Friday night:
+http://beginners-python-workshop.readthedocs.org/en/latest/index.html
+
+Saturday started off with a 2 hour Intro to Python presentation, the lunch
+and then we all broke up into groups and did projects.  We had a Django /
+web dev project, twitter api project and a few others.
+
+Overall I think it went really well.  We definitely got very technical but
+at a beginners level.  We had about 50 attendees and there were about 6
+helpers, and that was plenty.
+
+Good luck!  Let me know if you need anything else.
+
+Andrew Schoen
+
+On Mon, Jul 30, 2012 at 8:29 PM, Andrew Dunkman <adunkman@gmail.com> wrote:
+
+> Hey Andrew!
+>
+> Thanks for your reply. I'm looking to do something similar to the
+> PythonKC event. I couldn't make the event, but I've heard from a
+> number of people how great the format was.
+>
+> I liked the idea of the Friday setup and Saturday workshop.
+>
+> How technical did you get? What was your schedule like? Did you stick
+> to it, and how many people did you have helping?
+>
+> I heard that you modeled the workshop off another event=97is that true,
+> and linky linky? :)
+>
+> Thanks for your help!
+> Andrew

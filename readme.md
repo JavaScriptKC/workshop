@@ -1,5 +1,10 @@
 # Beginner's Workshop for Node.js
 
+```
+NOTE: This is a working draft. Please pull request changes. The outline is 
+particularly weak near the end.
+```
+
 ## Friday: Workstation setup 
 
 - While people are arriving: install Node.js

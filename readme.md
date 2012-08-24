@@ -13,6 +13,7 @@ particularly weak near the end.
 - Introduction to writing JavaScript
   - Variables
   - Native types
+  - Arrays
   - Operators
   - Flow control structures (if & else, while, for, for... in)
   - Advanced control structures (switch, ternary operator)
@@ -27,6 +28,7 @@ Bring a laptop, lunch will be provided.
 - Brief history of JavaScript
 - Writing intermediate JavaScript
   - Functions
+  - Objects
   - Variable scoping and closures
 - Events
   - Callbacks

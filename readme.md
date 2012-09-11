@@ -31,7 +31,7 @@ Bring a laptop, breakfast and lunch will be provided.
 - Flow control (if, else, and looping)
 
 ### 1015: *Recitation:* FizzBuzz
-### 1045: Activity
+### 1045: Activity TBD
 ### 1100: Functions in Javascript
 - What is a function?
 - Function expressions
@@ -42,7 +42,7 @@ Bring a laptop, breakfast and lunch will be provided.
 ###1115: *Recitation:* Reverse a numbers
 - Write a function that reverses the digits in a number and returns it
 
-### 1145: Activity
+### 1145: Activity TBD
 ### 1200: Lunch
 ### 1300: Advanced Topics
 - Functions as Function parameters
@@ -51,9 +51,9 @@ Bring a laptop, breakfast and lunch will be provided.
 - Reading and Writing files with `fs` package
 - Reading a file from the web with `http` package
 
-###1315: *Recitation:* Download a file from the web and save it to a file
-###1345: Activity
-###1400: Breakout topics
+### 1315: *Recitation:* Download a file from the web and save it to a file
+### 1345: Activity TBD
+### 1400: Breakout topics
 - Website in express on Heroku/Nodejitsu/Engine Yard
 - Advanced "Proper" Javascript
   - Prototypal objects
@@ -63,3 +63,7 @@ Bring a laptop, breakfast and lunch will be provided.
   - Testing
   - Package management
   - etc.
+
+### 1445: Activity TBD
+### 1500: Back to work
+### 1600: Done

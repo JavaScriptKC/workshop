@@ -7,9 +7,17 @@ particularly weak near the end.
 
 ## Friday: Workstation setup 
 
-- While people are arriving: install Node.js
-
+- Introduction to the group and the workshop
 - Introduction to the command line on Windows, Mac OS X, or Linux
+- Self guided tutorial to setup nodejs and intro to javascript as a calculator in the REPL
+  and running a .js file with node
+
+The self guided tutorial will be provided before the setup night for those who cannot
+attend or want to get started early.
+
+## Saturday: Workshop
+Bring a laptop, lunch will be provided.
+
 - Introduction to writing JavaScript
   - Variables
   - Native types
@@ -27,9 +35,6 @@ particularly weak near the end.
     - Calculating distance between two points
   - Substituting characters of a string with the 1337 speak equivelant eg. street -> 57r337
 - Hand out Saturday's schedule
-
-## Saturday: Workshop
-Bring a laptop, lunch will be provided.
 
 - Brief history of JavaScript
 - Writing intermediate JavaScript

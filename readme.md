@@ -17,9 +17,15 @@ particularly weak near the end.
   - Operators
   - Flow control structures (if & else, while, for, for... in)
   - Advanced control structures (switch, ternary operator)
+  - Console.log
 - Entering the REPL with the `node` command
-- Execuing code files with `node`
+- Executing code files with `node`
 - *Recitation:* Simple programming project to demonstrate skills taught
+  - Mathematics examples 
+    - Simple addition and multiplication examples printed to stdout (exercise order of operations and parens?)
+    - Sum of all odd numbers from 1 to 100
+    - Calculating distance between two points
+  - Substituting characters of a string with the 1337 speak equivelant eg. street -> 57r337
 - Hand out Saturday's schedule
 
 ## Saturday: Workshop

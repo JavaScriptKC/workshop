@@ -101,7 +101,7 @@ var net = require('net');
 
 var clients = [];
 
-var server = net.server(function (socket) {
+var server = net.createServer(function (socket) {
 	clients.push(socket);
 	
 	socket.on('end', function () {
@@ -120,7 +120,7 @@ var net = require('net');
 
 var clients = [];
 
-var server = net.server(function (socket) {
+var server = net.createServer(function (socket) {
 	clients.push(socket);
 	
 	socket.on('data', function (data) {

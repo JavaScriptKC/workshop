@@ -105,7 +105,8 @@ var server = net.server(function (socket) {
 	clients.push(socket);
 	
 	socket.on('end', function () {
-		delete clients[socket];
+		var index = clients.indexOf(socket);
+		delete clients[index];
 	});
 });
 

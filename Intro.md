@@ -85,7 +85,7 @@ Let's do something more complicated. Let's actually create our HTTP server throu
 var net = require('net');
 
 var server = net.createServer(function (socket) {
-	socket.write('hello world');
+	socket.write('hello world\n');
 	socket.end();
 });
 

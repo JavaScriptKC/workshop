@@ -8,7 +8,7 @@ In the simplest of terms, when an IO call is made a callback is required to invo
 
 #Example of using node as a HTTP server
 
-```
+```JavaScript
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
@@ -25,7 +25,7 @@ This simple example illustrates how node can be used to create an HTTP server th
 *Show headers of the HTTP response*
 There are two important headers to consider. First, is that Keep-Alive allows for the connection to the server to be maintained between subsequent requests. Secondly, the transfer-encoding: chunked allows for the Node process to send a variable length response. These two headers gives node the ability to stream data in the response as it's ready. For example, waiting on the database to return a result set or reading a file off the disk.
 
-```
+```JavaScript
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
@@ -81,7 +81,7 @@ Let's do something more complicated. Let's actually create our HTTP server throu
 
 # A simple chat server
 
-```
+```JavaScript
 var net = require('net');
 
 var server = net.createServer(function (socket) {
@@ -96,7 +96,7 @@ Connect to this and you'll be greeted with a nice message and your connection wi
 
 Our first modification is to keep a list of open connections and allow the connection to stay open.
 
-```
+```JavaScript
 var net = require('net');
 
 var clients = [];
@@ -114,7 +114,7 @@ server.listen(8080);
 
 Now that we have an updating list of connected clients we can start accepting and broadcasting messages. Let's also be mindful that we don't want to echo messages we've sent back to ourselves.
 
-```
+```JavaScript
 var net = require('net');
 
 var clients = [];

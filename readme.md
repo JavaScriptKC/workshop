@@ -1,69 +1,39 @@
-# Beginner's Workshop for Node.js
+# Introduction
+- What makes node possible. (v8, libuv)
+- Why use node?
+- When you shouldn't use node.
+- The REPL
+	- Show off the process global object
+- Running scripts with node
+- Example of evented model
+	- Compare to how other languages might handle waiting on a response from the network or db. Highlight that node is idle while waiting for callback and frees up other event handlers to do work.
+	- The program exits when no more callbacks!
+- Simple webserver
+	- Hello world
+	- Connection: keep-alive
+	- Transfer-Encoding: chunked -> Allows for streaming (Show an example of how the streaming is possible in the request handler)
+	- Show apache bench with -n 100 -c 100 to simulate 100 concurrent connections (show off the time it took)
+- *Interactive Demo* create a simple chat server encourage others to connect
 
-```
-NOTE: This is a working draft. Please pull request changes. The outline is 
-particularly weak near the end.
-```
+#Modules and NPM
 
-## Friday: Workstation setup 
+#Express App
 
-- Introduction to the group and the workshop
-- Introduction to the command line on Windows, Mac OS X, or Linux
-- Self guided tutorial to setup nodejs and intro to javascript as a calculator in the REPL,
-  running a .js file with node, and console.log()
-- Hand out Saturday's schedule
+#Event Emitters
 
-The self guided tutorial will be provided before the setup night for those who cannot
-attend or want to get started early.
+#Buffer
+- Stored outside of v8 memory.
+- Used in streams
 
-## Saturday: Workshop
-Bring a laptop, breakfast and lunch will be provided.
+#Streams
+- Show an example of issuing an http request and putting the response into a data variable. Describe how this is often a misuse of streams because it's buffering data in memory instead of piping it along.
+- Show an example of piping data from an input stream to an output.
+- Streams are EventEmitters with specific events  (Readable: data, end, error, close Writeable: drain, error, close, pipe)
 
-### 0800: Workstation Setup Redux (with donuts!)
-### 1000: Intro to Programming with Javascript
-- Variables
-- Native Types
-  - Number
-  - String
-  - Boolean
-- Arrays
-- Maps
-- Flow control (if, else, and looping)
+#File System
 
-### 1015: *Recitation:* FizzBuzz
-### 1045: Activity TBD
-### 1100: Functions in Javascript
-- What is a function?
-- Function expressions
-- Function parameters
-- Functions that *return*
-- Functions that call functions
+#Child Process
 
-###1115: *Recitation:* Reverse a numbers
-- Write a function that reverses the digits in a number and returns it
+#Domains?
 
-### 1145: Activity TBD
-### 1200: Lunch
-### 1300: Advanced Topics
-- Functions as Function parameters
-- Callbacks and EventEmitters
-- Capturing keyboard input with stdin
-- Reading and Writing files with `fs` package
-- Reading a file from the web with `http` package
-
-### 1315: *Recitation:* Download a file from the web and save it to a file
-### 1345: Activity TBD
-### 1400: Breakout topics
-- Website in express on Heroku/Nodejitsu/Engine Yard
-- Advanced "Proper" Javascript
-  - Prototypal objects
-  - Variable scoping and closures
-  - Variable hoisting
-- Software Engineering Fundamentals
-  - Testing
-  - Package management
-  - etc.
-
-### 1445: Activity TBD
-### 1500: Back to work
-### 1600: Done
+#Real Time

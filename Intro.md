@@ -81,6 +81,8 @@ Let's do something more complicated. Let's actually create our HTTP server throu
 
 # A simple chat server
 
+A chat server requires a persistent connection instead of a request/response mechanism like HTTP. This requires the use of a different module called 'net' which is really TCP. TCP will allow us to keep connections i.e. sockets open and duplex data between the client and server.
+
 ```JavaScript
 var net = require('net');
 

@@ -18,7 +18,8 @@
 
 #Modules 
 - Modules should comply with CommonJS
-- require() wraps in a closure that has access to module.exports
+- require() wraps in a closure that has access to module.export
+
 ```JavaScript
 var module = { exports: { } };
 
@@ -29,6 +30,7 @@ var module = { exports: { } };
 })(module, module.exports);
 
 ```
+
 - Module cache - Modules are cached by the resolved file name. Modules are only executed once so as long as the resolved filename is the same the exact same object will be returned. For example, a module loading another module in the node_modules directory will return a different object. 
 
 #NPM

@@ -49,23 +49,21 @@ var module = { exports: { } };
   - search
   - test
 
-#Express App
-
-#Event Emitters
-
-#Buffer
-- Stored outside of v8 memory.
-- Used in streams
-
-#Streams
+#Node Core
+-Event Emitters
+-Buffer
+  - Stored outside of v8 memory.
+  - Used in streams
+-Streams
 - Show an example of issuing an http request and putting the response into a data variable. Describe how this is often a misuse of streams because it's buffering data in memory instead of piping it along.
 - Show an example of piping data from an input stream to an output.
 - Streams are EventEmitters with specific events  (Readable: data, end, error, close Writeable: drain, error, close, pipe)
+-File System
+-Child Process
+-Domains?
 
-#File System
+#Express App
 
-#Child Process
-
-#Domains?
+#Debugging
 
 #Real Time

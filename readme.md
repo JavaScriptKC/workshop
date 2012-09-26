@@ -4,6 +4,7 @@
 - When you shouldn't use node.
 - The REPL
 	- Show off the process global object
+   - usefulness of the underscore 
 - Running scripts with node
 - Example of evented model
 	- Compare to how other languages might handle waiting on a response from the network or db. Highlight that node is idle while waiting for callback and frees up other event handlers to do work.
@@ -39,6 +40,7 @@ var module = { exports: { } };
 - local vs global node modules
 - Build something and publish with NPM?
 - How NPM handles different versions of the same 
+- The star for the most recent version
 - The tilde for versions to help resolve dependencies using symver
 - Useful NPM commands besides install
   - init

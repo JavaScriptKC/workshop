@@ -65,7 +65,11 @@ var module = { exports: { } };
 - Domains?
 
 #Express App
+- 
+- File Uploads
+
+#WebSockets
 
 #Debugging
 
-#Real Time
+#Real Time Projects with Node (Volunteer speakers)

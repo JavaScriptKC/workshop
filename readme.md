@@ -73,3 +73,9 @@ var module = { exports: { } };
 #Debugging
 
 #Real Time Projects with Node (Volunteer speakers)
+
+
+#Lab Ideas
+- Create a shell 
+- Create an express app
+- MongoDB / Couch database 

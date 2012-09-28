@@ -76,6 +76,7 @@ var module = { exports: { } };
 
 
 #Lab Ideas
+- Create a http proxy server
 - Create a shell 
 - Create an express app
 - MongoDB / Couch database 

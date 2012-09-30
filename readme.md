@@ -79,6 +79,13 @@ var module = { exports: { } };
 
 #Lab Ideas
 - Create a http proxy server
-- Create a shell 
+  - Using http module
+  - streams
+  - url parsing
+- Create a shell
+  - Streams
+  - Event Emitters
+  - File System
+  - Process global
 - Create an express app
 - MongoDB / Couch database 

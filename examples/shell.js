@@ -19,7 +19,7 @@ var commands = {
    'tail': function (args) {
       fs.stat(args[0], function (err, stats) {
          
-         var streamOptions = { 
+         var options = { 
            flags: 'r',
            encoding: 'utf8',
            mode: 0666,
@@ -33,7 +33,7 @@ var commands = {
          var newLines = new Array(numLines);
          var index = 0;
 
-         var fileStream = fs.createReadStream(args[0], streamOptions);
+         var fileStream = fs.createReadStream(args[0], options);
          
          fileStream.on('data', function (data) {
             for (var i = 0; i < data.length; i++) { 
@@ -49,12 +49,10 @@ var commands = {
          fileStream.on('end', function () {
             var end = newLines.splice(0, index);
             newLines = newLines.concat(end);
+            options.start = newLines[0] + 1;
 
-            streamOptions.start = newLines[0] + 1;
-
-            var stream = fs.createReadStream(args[0], streamOptions);
-
-            stream.on('data', function (d) {
+            fs.createReadStream(args[0], options)
+            .on('data', function (d) {
                console.log(d.toString());
             });
          });

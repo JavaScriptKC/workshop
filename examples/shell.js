@@ -29,7 +29,7 @@ var commands = {
          };
 
          var offset = 0;
-         var numLines = 1;
+         var numLines = 10;
          var newLines = new Array(numLines);
          var index = 0;
 

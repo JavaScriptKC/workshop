@@ -16,6 +16,9 @@ var commands = {
    'cd': function (args) {
       process.chdir(path.resolve(process.cwd(), args[0]));
    },
+   'head': function () {
+    
+   },
    'tail': function (args) {
       fs.stat(args[0], function (err, stats) {
          

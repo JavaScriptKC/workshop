@@ -5,10 +5,13 @@
 ##Step 1
 
 - Launch the Node REPL
+
 ```JavaScript
 > node
 ```
+
 - Evaluate a few simple expressions
+
 ```JavaScript
 > 1 + 5
 6
@@ -17,6 +20,7 @@ undefined
 > add(1, 5)
 6
 ```
+
 If we want to keep the result around from the function invocation we can type this:
 
 ```JavaScript
@@ -83,8 +87,3 @@ undefined
 > o['foobar']()
 'foo bar!'
 ```
-
-```JavaScript
-
-```
-

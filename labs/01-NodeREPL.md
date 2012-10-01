@@ -1,16 +1,12 @@
 #Getting started with the Node REPL
 
-##Take-aways
-
-##Step 1
-
-- Launch the Node REPL
+Launch the Node REPL
 
 ```JavaScript
 > node
 ```
 
-- Evaluate a few simple expressions
+Evaluate a few simple expressions
 
 ```JavaScript
 > 1 + 5
@@ -48,7 +44,7 @@ Working with arrays. There are a few different ways to create arrays in JavaScri
 > a.unshift("lime") 
 5 //unshift adds an element to the beginning of the array and returns the new length
 > a
-['lime', apple', 'banana', 'kiwi', 'lemon']
+['lime', 'apple', 'banana', 'kiwi', 'lemon']
 > a.pop()
 'lemon' //pop removes and returns the last value in the array.
 > a.shift()

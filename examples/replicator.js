@@ -64,30 +64,25 @@ var connect = function (others) {
 			return;
 		}
 
-		var socket = net.connect(o, function (err) {
-			peers[o] = socket;
-		});
+		var socket = peers[o] = net.connect(o);
 
 		socket.once('data', function (data) {
 			var result = JSON.parse(data);
-
 			socket.write(JSON.stringify({ port: myPort, peers: Object.keys(peers) }));			
-			
 			dataStore = result.data;
-
 			connect(result.peers);
-			
 			socket.pipe(broadCastStream, {end: false});
 		});	
-		
-		socket.on('close', function () {
-			console.log(o + ' closed')
-		});
 
-		socket.on('end', function () {
-			console.log(o + ' ended');
+		function cleanup () {
 			delete peers[o];
-		});
+
+			socket.removeListener('error', cleanup);
+			socket.removeListener('end', cleanup);
+		}
+		
+		socket.on('error', cleanup);
+		socket.on('end', cleanup);
 	});
 };
 

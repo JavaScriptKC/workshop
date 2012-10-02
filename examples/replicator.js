@@ -23,13 +23,7 @@ broadCastStream.write = function (data) {
 				continue;
 			}
 			
-			var socket = peers[p];
-
-			if (socket.writable) {
-				socket.write(data);
-			} else {
-				delete peers[p];
-			}
+			peers[p].write(data);
 		}
 	}
 };
@@ -38,6 +32,9 @@ var commands = {
 	'data': function () {
 		console.log(dataStore);
 	}, 
+	'me': function () {
+		console.log(myPort);
+	},
 	'events': function () {
 		console.log(Object.keys(events));
 	},
@@ -80,8 +77,12 @@ var connect = function (others) {
 
 			connect(result.peers);
 			
-			socket.pipe(broadCastStream);
+			socket.pipe(broadCastStream, {end: false});
 		});	
+		
+		socket.on('close', function () {
+			console.log(o + ' closed')
+		});
 
 		socket.on('end', function () {
 			console.log(o + ' ended');
@@ -97,12 +98,11 @@ var server = net.createServer(function (socket) {
 
 	socket.once('data', function (data) {
 		var result = JSON.parse(data);
-		
 		port = result.port;
 		peers[port] = socket;
-
 		connect(result.peers);
-		socket.pipe(broadCastStream);
+
+		socket.pipe(broadCastStream, {end: false});
 	});
 
 	socket.on('end', function () {

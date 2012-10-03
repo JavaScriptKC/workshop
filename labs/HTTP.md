@@ -1,5 +1,22 @@
 # Static HTTP server
 
+## Overview
+
+### Time 
+
+30 minutes
+
+### Objectives
+
+- How to use Node Core HTTP module.
+- How to bind an HTTP server to a port.
+- How to accept HTTP requests.
+- How to respond to incoming HTTP requests.
+   - Http Status: 200 OK
+   - With content
+
+## Lab
+
 In this lab we will create an http server that responds to all requests with a simple HTML template.
 
 1. Create a new file named ```server.js``` in a directory of your choice.

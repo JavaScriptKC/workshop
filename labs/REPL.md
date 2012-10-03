@@ -1,5 +1,22 @@
 # Node REPL
 
+## Overview
+
+### Time 
+
+15 minutes
+
+### Objectives
+
+- How to start the Node REPL
+- How to execute statements
+- How to interact with Arrays
+- How to interact with Objects
+- How to define functions
+- How to execute multi-line statements
+- How to exit the Node REPL
+
+## Lab
 To launch the Node REPL open a command prompt or terminal and execute ```node```.
 
 Evaluate a few simple expressions
@@ -128,6 +145,36 @@ undefined
 'foo bar!'
 > o['foobar']()
 'foo bar!'
+```
+
+## Functions
+
+JavaScript functions are declared using the ```function``` keyword. 
+
+```JavaScript
+function Foo() { }
+
+//Alternatively, Foo can be declared like this:
+
+var Foo = function () { }
+```
+
+Functions that do not have a name are *Anonymous Functions*. These are commonly used as callback arguments to other functions.
+
+```JavaScript
+//Anonymous function declaration
+function () { }
+
+//Declare a function that takes a callback argument
+var Foo = function (callback) {
+   //Foo function body
+   callback();
+}
+
+//Used as a callback argument
+Foo(function () {
+   //Callback function body
+});
 ```
 
 ## Multi-line statements

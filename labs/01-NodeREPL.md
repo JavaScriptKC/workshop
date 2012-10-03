@@ -13,16 +13,20 @@ undefined
 6
 ```
 
-If we want to keep the result around from the previous function invocation we can type this:
+Notice the result of the statement executed is printed in the following line without the ```>```. 
+
+If you forgot to assign the value of the previously executed statement, the Node REPL provides a useful syntax to access the previous result.
 
 ```JavaScript
-> var result = _
+> "Node Rocks!"
+"Node Rocks!"
+> _
+"Node Rocks!"
+> var lastResult = _
 undefined
-> result
-6
+> lastResult
+"Node Rocks!"
 ```
-
-The underscore is a useful feature if you forgot to assign the result of the last statement to a variable.
 
 ## Arrays
 
@@ -148,7 +152,7 @@ undefined
 
 ## Exiting 
 
-Exiting the Node REPL can be done many ways. However, the most common way is by pressing ```CTRL+C``` twice. 
+Exiting the Node REPL can be done many ways including killing the process. However, the most common way is by pressing ```CTRL+C``` twice. 
 
 ### Exiting programatically:
 

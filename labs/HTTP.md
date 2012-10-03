@@ -44,9 +44,13 @@ In this lab we'll create an http server that responds to all requests with a sim
 6. Visit http://localhost:8080 once again, this time there should be page with no content. But, we're not here to servce blank pages. Let's actually write some data. The response stream has a ```write``` function that takes a string to write to the output. 
 
    ```JavaScript
+   var http = require('http');
+
    var server = http.createServer(function (req, res) { 
       res.statusCode = 200;
       res.write('Hello World!');
       res.end();
    });
+
+   server.listen(8080);
    ```

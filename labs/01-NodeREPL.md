@@ -1,10 +1,6 @@
-#Getting started with the Node REPL
+# Node REPL
 
-Launch the Node REPL
-
-```JavaScript
-> node
-```
+To launch the Node REPL open a command prompt or terminal and execute ```node```.
 
 Evaluate a few simple expressions
 
@@ -17,7 +13,7 @@ undefined
 6
 ```
 
-If we want to keep the result around from the function invocation we can type this:
+If we want to keep the result around from the previous function invocation we can type this:
 
 ```JavaScript
 > var result = _
@@ -26,16 +22,36 @@ undefined
 6
 ```
 
-Working with arrays. There are a few different ways to create arrays in JavaScript. First, you can use the array syntax ```[1,3,3,7]```. This will create an array with four elements. A difference between arrays in JavaScript and many other languages is that they are mutable. It is not required to specify the size of an array at creation time. Although, it's more performant it's not required. The second way of creating an array is with the ```Array``` constructor. Give these examples a try.
+The underscore is a useful feature if you forgot to assign the result of the last statement to a variable.
+
+## Arrays
+
+There are a few different ways to create arrays in JavaScript. First, you can use the array syntax, for example ```[1,3,3,7]```. This will create an array with four elements. A major difference between arrays in JavaScript and many other languages is that they are mutable and the size is not required to create. Another way of creating an array is with the ```Array``` constructor. 
+
+These examples assume a continous REPL session.
+
+### The array Initializer:
 
 ```JavaScript
-> []
-[]
-> [].length
+> [1, 2]
+[1, 2]
+> [1,2].length
 0
-> new Array() //using the Array constructor function
+```
+
+### Using the array constructor function:
+
+```JavaScript
+> new Array()
 []
-> var a =  ['apple', 'banana', 'kiwi'] //using the array initializer syntax
+> _.length
+0
+```
+
+### Adding an item to an array:
+
+```JavaScript
+> var a =  ['apple', 'banana', 'kiwi']
 ['apple', 'banana', 'kiwi']
 > a.length
 3
@@ -43,12 +59,24 @@ Working with arrays. There are a few different ways to create arrays in JavaScri
 4 //push returns the size of the array after the push operation completes
 > a.unshift("lime") 
 5 //unshift adds an element to the beginning of the array and returns the new length
+```
+
+### Removing an item from an array: 
+
+```JavaScript
 > a
 ['lime', 'apple', 'banana', 'kiwi', 'lemon']
 > a.pop()
 'lemon' //pop removes and returns the last value in the array.
 > a.shift()
 'lime' //shift removes and returns the first value in the array.
+```
+
+### Copying an array:
+
+```JavaScript
+> a
+['apple', 'banana', 'kiwi']
 > a.slice(0, 1)
 ['apple', 'banana' ] //slice can be used to copy a portion of an array to a new array. 
 > a
@@ -57,9 +85,11 @@ Working with arrays. There are a few different ways to create arrays in JavaScri
 ['apple', 'banana', 'kiwi'] //Provides a way to copy the entire array.
 ```
 
-#Objects
+## Objects
 
-There's two primary ways to create a JavaScript object ```var o = {}``` and ```var o = new Object()```
+There's two primary ways to create a JavaScript object: ```var o = {}``` and ```var o = new Object()```
+
+### Properties using the dot syntax: 
 
 ```JavaScript
 > var o = {}
@@ -70,16 +100,58 @@ undefined
 'bar'
 > o.foo.length
 3
-> o['foo'].length //Objects can be accessed using the array syntax. This also allows for object properties to have spaces or other special characters.
+```
+
+### Properties using the array syntax:
+
+```JavaScript
+> o['foo']
+'bar'
+> o['foo'].length //This also allows for object properties to have spaces or other special characters.
 3
+```
+
+### Objects are compositional: 
+
+```JavaScript
 > o.bar = [1, 2, 3, 4]
 [1, 2, 3, 4]
 > o.bar.length
 4
-> o.foobar = function () { console.log('foo bar!') }
+> o.foobar = function () { return 'foo bar!'; }
 [Function]
 > o.foobar()
 'foo bar!'
 > o['foobar']()
 'foo bar!'
+```
+
+## Multi-line statements
+
+The Node REPL allows for multi-line statements to be executed. When a line cannot be processed as a complete JavaScript statement the Node REPL prompts for more input:
+
+```
+> var boo = function () {
+... 
+```
+
+The ```...``` indicates that the Node REPL expects more input. ```CTRL+C``` can be used to terminate the multi-line statement. Now, define a multi-line function and execute it: 
+
+```JavaScript
+> var boo = function () {
+..... return "Hello World!";
+..... }
+undefined
+> boo()
+'Hello World!'
+```
+
+## Exiting 
+
+Exiting the Node REPL can be done many ways. However, the most common way is by pressing ```CTRL+C``` twice. 
+
+### Exiting programatically:
+
+```JavaScript
+process.exit()
 ```

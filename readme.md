@@ -65,18 +65,39 @@ var module = { exports: { } };
 - Domains?
 
 #Express App
-- 
-- File Uploads
+- What do they need to know before touching an express app?
+  - Modules
+- Localhost serve static page
+- Show query parameter in output
+- POST a form
 
 #WebSockets
 
 #Debugging
 
-#Real Time Projects with Node (Volunteer speakers)
+#Testing
 
+#Real Time Projects with Node (Volunteer speakers)
 
 #Lab Ideas
 - Create a http proxy server
-- Create a shell 
+  - Using http module
+  - streams
+  - url parsing
+- Create a shell
+  - Streams
+  - Event Emitters
+  - File System
+  - Process global
 - Create an express app
+  - Streams
+  - Http module
+  - File system
+  - Process global
+  - Event Emitters
 - MongoDB / Couch database 
+  - Native modules
+  - Data Access
+- Web based REPL
+  - Websockets
+  - All other core stuff

@@ -124,9 +124,10 @@ In this lab we will create an http server that responds to all requests with a s
 
    server.listen(8080);
    ```
+   
 ### A simple template engine
 
-It's boring to serve content that doesn't change! So let's create a simple template engine to serve dynamic variables.
+   It's boring to serve content that doesn't change! So let's create a simple template engine to serve dynamic variables.
 
    ```JavaScript
    var templateEngine = function (template, data) {
@@ -153,9 +154,9 @@ It's boring to serve content that doesn't change! So let's create a simple templ
    };
    ```
 
-This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. 
-
-Let's use this new "template engine" to parse the content of our index.html file.
+   This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. 
+   
+   Let's use this new "template engine" to parse the content of our index.html file.
 
    ```JavaScript
    var fs = require('fs');
@@ -188,18 +189,18 @@ Let's use this new "template engine" to parse the content of our index.html file
       res.statusCode = 200;
 
       fs.readFile('index.html', function (err, data) {
-            if(!err) {
-              res.write(templateEngine(data, {}));
-              res.end();
-            } 
-         });
+         if(!err) {
+            res.write(templateEngine(data, {}));
+            res.end();
+         } 
+      });
    });
 
    server.listen(8080);
    ```
-
-Now try this in the browser. You'll notice that the output is the same. Let's change ```index.html``` a little to take advantage of our template engine.
-
+   
+   Now try this in the browser. You'll notice that the output is the same. Let's change ```index.html``` a little to take advantage of our template engine.
+   
    ```HTML
    <html>
       <head>
@@ -214,24 +215,30 @@ Now try this in the browser. You'll notice that the output is the same. Let's ch
       </body>
    </html>
    ```
+      
+   The above modifications require three properties on our data object, let's assign those:
    
-The above modifications require three properties on our data object, let's assign those:
-
-```
-   ... (code omitted from example)
-   fs.readFile('index.html', function (err, data) {
-      if(!err) {
-        res.write(templateEngine(data, {
-          name: 'Ryan Dahl',
-          node: process.versions.node,
-          v8: process.versions.v8
-        }));
-        res.end();
-      } 
-   });
-   ... (code omitted from example)
-```
-
-Now our output from the browser should be: 
-
+   ```JavaScript
+      ... (code omitted from example)
+      fs.readFile('index.html', function (err, data) {
+         if(!err) {
+           res.write(templateEngine(data, {
+             name: 'Ryan Dahl',
+             node: process.versions.node,
+             v8: process.versions.v8
+           }));
+           res.end();
+         } 
+      });
+      ... (code omitted from example)
+   ```
+   
+   Now our output from the browser should be: 
+   
+   ```
+   Hello Ryan Dahl!
+   
+   Node Version: 0.8.8
+   V8 Version: 3.11.10.19
+   ```
 

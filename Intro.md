@@ -146,7 +146,7 @@ var server = net.createServer(function (socket) {
 	
 	socket.on('end', function () {
 		var index = clients.indexOf(socket);
-		delete clients[index];
+		clients.splice(index,1);
 	});
 });
 
@@ -178,7 +178,7 @@ var server = net.createServer(function (socket) {
 	
 	socket.on('end', function () {
 		var index = clients.indexOf(socket);
-		delete clients[index];
+		clients.splice(index,1);
 	});
 });
 

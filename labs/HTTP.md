@@ -43,8 +43,9 @@ In this lab we will create an http server that responds to all requests with a s
    
    server.listen(8080);
    ```
+5. Launch your server at the command line: ```node server.js```
 
-5. Open your browser and navigate to http://localhost:8080 (replace 8080 with whatever port you chose if different). You will notice that your browser seems to hang and will eventually timeout. This is because our HTTP is not yet doing anything useful with the incoming connection. Let's start by responding to the request with a 200 HTTP status code.
+6. Open your browser and navigate to http://localhost:8080 (replace 8080 with whatever port you chose if different). You will notice that your browser seems to hang and will eventually timeout. This is because our HTTP is not yet doing anything useful with the incoming connection. Let's start by responding to the request with a 200 HTTP status code.
 
    Here's where we are so far.
    
@@ -63,7 +64,7 @@ In this lab we will create an http server that responds to all requests with a s
 
    A call to ```res.end()``` is required in order to let the client know the server has finished the response.
 
-6. Visit http://localhost:8080 once again. This time there should be a page with no content, but we are not here to serve blank pages. Let's actually write some data. The response stream has a ```write``` function that takes a string to write to the output. 
+7. Visit http://localhost:8080 once again. This time there should be a page with no content, but we are not here to serve blank pages. Let's actually write some data. The response stream has a ```write``` function that takes a string to write to the output. 
 
    ```JavaScript
    var http = require('http');

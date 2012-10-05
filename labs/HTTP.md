@@ -124,3 +124,114 @@ In this lab we will create an http server that responds to all requests with a s
 
    server.listen(8080);
    ```
+### A simple template engine
+
+It's boring to serve content that doesn't change! So let's create a simple template engine to serve dynamic variables.
+
+   ```JavaScript
+   var templateEngine = function (template, data) {
+   
+      var vars = template.match(/\{\w+\}/g);
+      
+      if (vars === null) {
+         return template;
+      }
+      
+      var nonVars = template.split(/\{\w+\}/g);
+      var output = '';
+   
+      for (var i = 0; i < nonVars.length; i++) {
+         output += nonVars[i];
+   
+         if (i < vars.length) {
+            var key = vars[i].replace(/[\{\}]/g, '');
+            output += data[key]
+         }
+      }
+   
+      return output;
+   };
+   ```
+
+This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. 
+
+Let's use this new "template engine" to parse the content of our index.html file.
+
+   ```JavaScript
+   var fs = require('fs');
+   var http = require('http');
+   
+   var templateEngine = function (template, data) {
+   
+      var vars = template.match(/\{\w+\}/g);
+      
+      if (vars === null) {
+         return template;
+      }
+      
+      var nonVars = template.split(/\{\w+\}/g);
+      var output = '';
+   
+      for (var i = 0; i < nonVars.length; i++) {
+         output += nonVars[i];
+   
+         if (i < vars.length) {
+            var key = vars[i].replace(/[\{\}]/g, '');
+            output += data[key]
+         }
+      }
+   
+      return output;
+   };
+   
+   var server = http.createServer(function (req, res) { 
+      res.statusCode = 200;
+
+      fs.readFile('index.html', function (err, data) {
+            if(!err) {
+              res.write(templateEngine(data, {}));
+              res.end();
+            } 
+         });
+   });
+
+   server.listen(8080);
+   ```
+
+Now try this in the browser. You'll notice that the output is the same. Let's change ```index.html``` a little to take advantage of our template engine.
+
+   ```HTML
+   <html>
+      <head>
+         <title>My Node.JS server</title>
+      </head>
+      <body>
+         <h1>Hello {name}!</h1>
+         <ul>
+            <li>Node Version: {node}</li>
+            <li>V8 Version: {v8}</li>
+         </ul>
+      </body>
+   </html>
+   ```
+   
+The above modifications require three properties on our data object, let's assign those:
+
+```
+   ... (code omitted from example)
+   fs.readFile('index.html', function (err, data) {
+      if(!err) {
+        res.write(templateEngine(data, {
+          name: 'Ryan Dahl',
+          node: process.versions.node,
+          v8: process.versions.v8
+        }));
+        res.end();
+      } 
+   });
+   ... (code omitted from example)
+```
+
+Now our output from the browser should be: 
+
+

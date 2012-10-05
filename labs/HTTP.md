@@ -77,3 +77,50 @@ In this lab we will create an http server that responds to all requests with a s
 
    server.listen(8080);
    ```
+### Write a files contents to HTTP response
+
+   To load a files content from disk:
+
+   ```JavaScript
+   var fs = require('fs');
+
+   fs.readFile('index.html', function (err, data) {
+      if(!err) {
+         console.log(data); 
+      } 
+   });
+
+   ```
+
+   Obviously this won't work because theres no index.html in our directory. Create that with something like this:
+
+   ```HTML
+   <html>
+      <head>
+         <title>My Node.JS server</title>
+      </head>
+      <body>
+         <h1>Hello World!</h1>
+      </body>
+   </html>
+   ```
+   
+   Now that we know how to read a file from disk let's join that with our previous HTTP server example.
+
+   ```JavaScript
+   var fs = require('fs');
+   var http = require('http');
+
+   var server = http.createServer(function (req, res) { 
+      res.statusCode = 200;
+
+      fs.readFile('index.html', function (err, data) {
+            if(!err) {
+              res.write(data);
+              res.end();
+            } 
+         });
+   });
+
+   server.listen(8080);
+   ```

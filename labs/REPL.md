@@ -57,7 +57,7 @@ These examples assume a continous REPL session.
 > [1, 2]
 [1, 2]
 > [1,2].length
-0
+2
 ```
 
 ### Using the array constructor function:
@@ -99,7 +99,7 @@ These examples assume a continous REPL session.
 > a
 ['apple', 'banana', 'kiwi']
 > a.slice(0, 1)
-['apple', 'banana' ] //slice can be used to copy a portion of an array to a new array. 
+['apple'] //slice can be used to copy a portion of an array to a new array. The first argument is the start index and the second argument is the end index. This is not inclusive on the end.
 > a
 ['apple', 'banana', 'kiwi'] //the array is not changed.
 > a.slice(0)
@@ -114,7 +114,7 @@ There's two primary ways to create a JavaScript object: ```var o = {}``` and ```
 
 ```JavaScript
 > var o = {}
-{}
+undefined
 > o.foo
 undefined
 > o.foo = 'bar'
@@ -152,10 +152,6 @@ undefined
 JavaScript functions are declared using the ```function``` keyword. 
 
 ```JavaScript
-function Foo() { }
-
-//Alternatively, Foo can be declared like this:
-
 var Foo = function () { }
 ```
 
@@ -171,7 +167,7 @@ var Foo = function (callback) {
    callback();
 }
 
-//Used as a callback argument
+//An anonymous function used as a callback argument
 Foo(function () {
    //Callback function body
 });

@@ -155,9 +155,9 @@ var templateEngine = function (template, data) {
 };
 ```
 
-This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. 
+This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. Feel free to copy/paste this code unless you want extra practice with JavaScript.
 
-Let's use this new "template engine" to parse the content of our index.html file.
+Let's use this new "template engine" to parse the content of our ```index.html``` file.
 
 ```JavaScript
 var fs = require('fs');
@@ -212,6 +212,8 @@ Now try this in the browser. You'll notice that the output is the same. Let's ch
       <ul>
          <li>Node Version: {node}</li>
          <li>V8 Version: {v8}</li>
+         <li>URL: {url}</li>
+         <li>Time: {time}</li>
       </ul>
    </body>
 </html>
@@ -226,7 +228,9 @@ The above modifications require three properties on our data object, let's assig
         res.write(templateEngine(data, {
           name: 'Ryan Dahl',
           node: process.versions.node,
-          v8: process.versions.v8
+          v8: process.versions.v8,
+          time: new Date(),
+          url: req.url
         }));
         res.end();
       } 

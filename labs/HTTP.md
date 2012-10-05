@@ -77,6 +77,7 @@ In this lab we will create an http server that responds to all requests with a s
 
    server.listen(8080);
    ```
+   
 ### Write a files contents to HTTP response
 
 To load a files content from disk:

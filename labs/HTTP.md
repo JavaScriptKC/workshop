@@ -238,12 +238,14 @@ The above modifications require three properties on our data object, let's assig
    ... (code omitted from example)
 ```
 
-Now our output from the browser should be: 
+Now our output from the browser (if we visited http://localhost:8080/poop) should be: 
 
 ```
 Hello Ryan Dahl!
 
 Node Version: 0.8.8
 V8 Version: 3.11.10.19
+URL: /poop
+Time: Fri Oct 05 2012 10:56:17 GMT-0500 (Central Daylight Time)
 ```
 

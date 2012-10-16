@@ -2,16 +2,16 @@
 
 Node.js is a wrapper around Joyent's libuv and Google's V8 JavaScript engine. It provides a minimal approach to a framework for network communication. 
 
-A major tenet of Node.js is that IO is performed asynchronously and there is no busy waiting. The asynchronous IO calls is made possible through libuv and the already familar syntax of callbacks in JavaScript. 
+A major tenet of Node.js is that IO is performed asynchronously and there is no busy-waiting. The asynchronous IO calls is made possible through libuv and the already familar syntax of callbacks in JavaScript. 
 
-In the simplest of terms, when an IO call is made a callback is required to invoke after completion. Libuv handles the scheduling and invocation of these callbacks through what's called the event loop. The event loop is the driving force behind why Node.js is considered asynchronous. Any time computation must wait for a slow network connection or hard disk a callback is placed in this event loop and execution is resumed in the JavaScript application. 
+In the simplest of terms, when an IO call is made a callback is required to invoke after completion. Libuv handles the scheduling and invocation of these callbacks through what is called the event loop. The event loop is the driving force behind why Node.js is considered asynchronous. Any time computation must wait for a slow network connection or hard disk a callback is placed in this event loop and execution is resumed in the JavaScript application. 
 
 #Example of using node as a HTTP server
 
 ```JavaScript
 var http = require('http');
 
-var server = http.createServer(function (req, res) {
+var server = http.createServer(function httpCallback(req, res) {
 	res.writeHead(200);
 	res.write("Hello world!");
 	res.end()
@@ -20,53 +20,94 @@ var server = http.createServer(function (req, res) {
 server.listen(8000);
 ```
 
-This simple example illustrates how node can be used to create an HTTP server that responds to all requests with "Hello world!" It's important to note that the call to ```server.listen(8000)``` essentially registers the callback to createServer in the libuv event loop. When an HTTP request is received libuv and ultimately Node core invokes the callback. 
+This simple example illustrates how node can be used to create an HTTP server that responds to all requests with "Hello world!" It is important to note that the call to ```server.listen(8000)``` essentially registers the ```httpCallback``` function with the libuv event loop. When an HTTP request is received, libuv and ultimately Node invokes the callback. 
 
-*Show headers of the HTTP response*
-There are two important headers to consider. First, is that Keep-Alive allows for the connection to the server to be maintained between subsequent requests. Secondly, the transfer-encoding: chunked allows for the Node process to send a variable length response. These two headers gives node the ability to stream data in the response as it's ready. For example, waiting on the database to return a result set or reading a file off the disk.
+```
+> curl http://127.0.0.1:8000 -i
+HTTP/1.1 200 OK
+Date: Fri, 28 Sep 2012 03:42:52 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+```
+
+There are two important headers to consider. First, ```Connection: keep-alive``` allows for the connection to the server to be maintained between subsequent requests. This removes the overhead of the TCP negotion that would otherwise need to occur on every request. Second, ```Transfer-encoding: chunked``` allows for the Node server to respond with a variable length response. These two headers gives Node the ability to stream data in the response as it becomes ready. For example, waiting on the database to return a result set or reading a file off the disk.
+
+```JavaScript
+var http = require('http');
+
+function queryDatabase(callback) {
+	setTimeout(callback, 3000); //3 seconds
+}
+
+var server = http.createServer(function (req, res) {
+	res.writeHead(200);
+
+	queryDatabase(function () {
+		res.write("Hello World!");	
+		res.end();
+	});
+});
+
+server.listen(8000);
+```
+
+In this example, when a request is made to the server a long running database query is invoked. When this query finishes (in 3 seconds) a callback is invoked and the response to the client is finished. While the the first client is waiting for the operation to complete subsequent clients can still connect. We can test this behavior by opening multiple shells and making simultaneous requests. A timeout of three seconds was chosen to help visualize the non-blocking behavior.
+
+```
+> curl http://localhost:8000
+3000 milliseconds later...
+Hello World!
+```
+
+Also worth noting is that ```res.end()``` is called inside the callback. This is why the connection is still open and can still receive "Hello world!" several seconds later. 
+
+An example of a process that would be considered a gross misuse of node could be something like this:
 
 ```JavaScript
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
 	res.writeHead(200);
-	//Simulate something that takes a long time
-	setTimeout(function () {
-		res.write("Hello world!");	
-		res.end();
-	}, 2000)
+
+	while(true) { 
+	}
+	
+	res.write("Hello World!");	
+	res.end();
+
 });
 
 server.listen(8000);
 ```
 
-```curl http://localhost:8000```
+In this example Node is 100% busy serving the first request forever. Node does not operate with a threaded model. It is only ever doing one thing at a time in JavaScript. This is why performing computationally expensive operations is not a good use of Node. However, that's not to say that you cannot do CPU bound operations with Node. There are benchmarks showing the performance of JavaScript in V8 on the heels of equivelant C++ code.
 
-The first thing to notice in this example is that the function invocation ends as soon as setTimeout returns. The callback provided to setTimeout is invoked some time later. This might simulate a request to another service or file system or anything that takes a computationaly significant amount of time. 
+# When should you use Node?
 
-Also worth noting is that ```res.end()``` is called inside the callback. This is why the connection is still open and can still receive "Hello world!" two seconds later. 
+Any time you are creating an application that demands a high number of concurrent connections that do not need a lot of time on the CPU. Node is especially good at handling these concurrent connections because of its evented philosophy. 
 
-#When should you use node?
-
-Any time you are creating an application that demands a high number of concurrent connections. Node is especially good at handling these concurrent connections because of its evented philosophy. 
-
-Let's go back to our last example where our HTTP server is working hard for two seconds and then ends the response. Apache bench will allow us to simulate 100 concurrent connections and provide statistics about the response time.
+Let's go back a few examples where our HTTP server is working hard for several seconds and then writes "Hello World!" to the response. Apache bench will allow us to simulate 100 concurrent connections and provide statistics about the response time.
 
 ```ab -n 100 -c 100 http://127.0.0.1```
 
-Note that the overall time for 100 concurrent connections to complete is roughly two seconds. Let's try it with 1000 concurrent connections. However, because of consumer OS limitations we must increase the number of ports that can be open on our machines. *Code to increase ulimit*
+Note that the overall time for 100 concurrent connections to complete is roughly three seconds. Let's try it with 1000 concurrent connections. However, because of consumer OS limitations we must increase the number of ports that can be open on our machines. 
+
+# Code to increase ulimit**
 
 ```ab -n 1000 -c 1000 http://127.0.0.1```
 
-# Lets dig into the node process with the node REPL
+# Lets dig into the Node process with the Node REPL
 
-When the node process is run without arguments a REPL is provided. The full power of V8 and node is available through this interface. You can execute multi-line statements and inspect variables. This is similar to the console that's available in many web browsers. Node has made an attempt to be consistent with many browser conventions. An example of this consistency is the implementation of setTimeout. This function wraps a native call in both browsers and in this case node to invoke a callback at a later time. This is not provided by V8 out of the box. As a matter of fact V8 only provides the JavaScript virtual environment. One similarity to the browser that node provides is a global object that has information about the environment. In browsers this object is named 'window', however, in node it's called 'process'. These objects whether in the browser or in node serve a similar purpose. 
+When the Node process is run without arguments you are presented with a REPL (Read Evaluate Print Loop). The full power of V8 and Node is available through this interface. You can execute multi-line statements and inspect variables. This is similar to the JavaScript console that's available in many web browsers. 
+
+Node has made an attempt to be consistent with many browser conventions. An example of this consistency is the implementation of setTimeout. This function wraps a native call in both browsers and Node to invoke a callback after a specifed number of milliseconds. This is not provided by V8 out of the box. As a matter of fact, V8 only provides the JavaScript execution engine. One similarity to the browser that Node provides is a global object that has information about the environment. In browsers this object is named 'window' and in Node it's named 'process'. These objects, whether in the browser or in Node, serve a similar purpose. 
 
 ```
+> node
 > process.pid
 1408
 > process.env
-{ PATH: '/Users/joe/.rvm/gems/ruby-1.9.3-p194/bin:/Users/joe/.rvm/gems/ruby-1.9.3-p194@global/bin:/Users/joe/.rvm/rubies/ruby-1.9.3-p194/bin:/Users/joe/.rvm/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/Users/joe/bin:/opt/local/bin:/Users/joe/.rvm/bin',
+{ PATH: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin',
   SHELL: '/bin/zsh',
   HOME: '/Users/joe',
   USER: 'joe',
@@ -74,10 +115,7 @@ When the node process is run without arguments a REPL is provided. The full powe
 }	
 ```
 
-Let's do something more complicated. Let's actually create our HTTP server through the REPL. It's as easy as copy and paste of the previous snippet to get it working.
-
-*Copy and paste snippet in the REPL*
-*Invoke the web site*
+Let's do something more complicated. Let's actually create our HTTP server through the REPL. It's as easy as copy and paste of a previous snippet to get it working.
 
 # A simple chat server
 
@@ -87,14 +125,14 @@ A chat server requires a persistent connection instead of a request/response mec
 var net = require('net');
 
 var server = net.createServer(function (socket) {
-	socket.write('hello world\n');
+	socket.write('Hello World\n');
 	socket.end();
 });
 
 server.listen(8080);
 ```
 
-Connect to this and you'll be greeted with a nice message and your connection will end immediately. In order to actually create a chat server we need to know who's connected and notify them of new messages. Obviously this also requires accepting messages and broadcasting them to connected clients. Let's try and do that.
+Connect to this and you will be greeted with ```Hello World!``` and your connection will terminate immediately. In order to actually create a chat server we need to know who's connected and notify them of new messages. Obviously this also requires accepting messages and broadcasting them to connected clients. Let's try and do that.
 
 Our first modification is to keep a list of open connections and allow the connection to stay open.
 
@@ -108,14 +146,14 @@ var server = net.createServer(function (socket) {
 	
 	socket.on('end', function () {
 		var index = clients.indexOf(socket);
-		delete clients[index];
+		clients.splice(index,1);
 	});
 });
 
 server.listen(8080);
 ```
 
-Now that we have an updating list of connected clients we can start accepting and broadcasting messages. Let's also be mindful that we don't want to echo messages we've sent back to ourselves.
+Now that we have an updating list of connected clients we can start accepting and broadcasting messages. Let's also be mindful that we do not want to echo messages we have sent back to ourselves.
 
 ```JavaScript
 var net = require('net');
@@ -140,7 +178,7 @@ var server = net.createServer(function (socket) {
 	
 	socket.on('end', function () {
 		var index = clients.indexOf(socket);
-		delete clients[index];
+		clients.splice(index,1);
 	});
 });
 

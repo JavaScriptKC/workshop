@@ -4,7 +4,7 @@
 - When you shouldn't use node.
 - The REPL
 	- Show off the process global object
-   - usefulness of the underscore 
+   - usefulness of the underscore
 - Running scripts with node
 - Example of evented model
 	- Compare to how other languages might handle waiting on a response from the network or db. Highlight that node is idle while waiting for callback and frees up other event handlers to do work.
@@ -16,7 +16,7 @@
 	- Show apache bench with -n 100 -c 100 to simulate 100 concurrent connections (show off the time it took)
 - *Interactive Demo* create a simple chat server encourage others to connect
 
-#Modules 
+#Modules
 - Modules should comply with CommonJS
 - require() wraps in a closure that has access to module.export
 
@@ -24,14 +24,14 @@
 var module = { exports: { } };
 
 (function (module, exports) {
-   
+
    //Your module code here
 
 })(module, module.exports);
 
 ```
 
-- Module cache - Modules are cached by the resolved file name. Modules are only executed once so as long as the resolved filename is the same the exact same object will be returned. For example, a module loading another module in the node_modules directory will return a different object. 
+- Module cache - Modules are cached by the resolved file name. Modules are only executed once so as long as the resolved filename is the same the exact same object will be returned. For example, a module loading another module in the node_modules directory will return a different object.
 
 #NPM
 - Define package managers compare to other platforms
@@ -41,7 +41,7 @@ var module = { exports: { } };
 - packages.json
 - local vs global node modules
 - Build something and publish with NPM?
-- How NPM handles different versions of the same 
+- How NPM handles different versions of the same
 - The star for the most recent version
 - The tilde for versions to help resolve dependencies using symver
 - Useful NPM commands besides install

@@ -116,8 +116,93 @@ Feel free to implement your favorite shell command as an exercise or follow alon
 
 ```tail [N]```: prints the last N lines of a file. This requires us to locate all of the newlines in a file and trim down to last N number of lines to print. If N is not specified we'll use 10 as the default.
 
+Implementing this will give you exposure to file streams, getting formation about a file, and useful Array functions.
 
+First, let's add the tail command to our commands object. After this point all examples will exclude the command object declaration.
 
+```js
+...
+
+var commands = {
+   'pwd': function () {
+      console.log(process.cwd());
+   },
+   'ls': function (args) {
+      //Implementation of ls here
+   },
+   'tail': function (args) {
+      // Implemtation of tail here.
+   };
+};
+
+...
+```
+
+First, pull in the ```fs``` module at the top of the file. ```fs``` is the node core module for file system operations.
+
+```
+var stdin = process.openStdin();
+var fs = require('fs');
+
+...
+```
+
+Get the length of the file in bytes. To do this we'll need to stat the file path provided as the first argument.
+
+```
+...this is declared within the commands object.
+'tail': function (args) {
+   var stats = fs.statSync(args[0]);
+
+   console.log(stats);
+}
+...
+```
+
+The stat object looks like this:
+
+```js
+{ dev: 16777219,
+  ino: 12794104,
+  mode: 33188,
+  nlink: 1,
+  uid: 501,
+  gid: 20,
+  rdev: 0,
+  size: 8066,
+  blksize: 4096,
+  blocks: 16,
+  atime: Sat Oct 13 2012 15:23:59 GMT-0500 (CDT),
+  mtime: Sat Oct 13 2012 13:40:02 GMT-0500 (CDT),
+  ctime: Sat Oct 13 2012 13:40:04 GMT-0500 (CDT) }
+```
+
+We're concerned with the size and blksize properties for this exercise.
+
+With these properties we can create a read stream that starts at the beginning of the file and continues until to the end. Each ```blksize``` bytes of the file will be provided to us through a callback. Here's the implementation:
+
+```js
+'tail': function (args) {
+   var stats = fs.statSync(args[0]);
+   
+   var options = { 
+     flags: 'r',
+     encoding: 'utf8',
+     mode: 0666,
+     bufferSize: stats.blksize,
+     start: 0,
+     end: stats.size
+   };
+   
+   var fileStream = fs.createReadStream(args[0], options);
+
+   fileStream.on('data', function (data) {
+      //This anonymous function (callback) will be 
+      //executed for every blksize(bufferSize from options) 
+      //bytes of the file.
+   });
+}
+```
 
 
 

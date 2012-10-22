@@ -22,17 +22,24 @@ var commands = {
    'tail': function (args) {
       fs.stat(args[0], function (err, stats) {
          
+         if (stats.size === 0) {
+            return;
+         }
+
          var options = { 
-           flags: 'r',
-           encoding: 'utf8',
-           mode: 0666,
-           bufferSize: stats.blksize,
-           start: 0,
-           end: stats.size
+            flags: 'r',
+            encoding: 'utf8',
+            mode: 0666,
+            bufferSize: stats.blksize,
+            start: 0,
+            end: stats.size
          };
 
          var offset = 0;
-         var numLines = 10;
+         // Keep track of one extra newline
+         // So we can start reading in the contents starting
+         // at the next character
+         var numLines = 1 + 1; 
          var newLines = new Array(numLines);
          var index = 0;
 
@@ -50,13 +57,19 @@ var commands = {
          });
 
          fileStream.on('end', function () {
-            var end = newLines.splice(0, index);
-            newLines = newLines.concat(end);
-            options.start = newLines[0] + 1;
+            if (typeof newLines[index] === 'number') {
+               var position = newLines[index] + 1;
+            } 
+            else {
+               var position = 0;
+            }
+            
+            var bytesToRead = stats.size - position;
 
-            fs.createReadStream(args[0], options)
-            .on('data', function (d) {
-               console.log(d.toString());
+            fs.open(args[0], 'r', function (err, fd) {
+               var buffer = new Buffer(bytesToRead);
+               fs.readSync(fd, buffer, 0, bytesToRead, position);
+               console.log(buffer.toString())
             });
          });
       });  

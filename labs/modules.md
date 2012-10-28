@@ -17,7 +17,9 @@
 
 ## require() a node module
 
-In this lab we'll ```require()``` a file into our project.  To start create a folder called ```/planets```.  
+In this lab we'll ```require()``` a file into our project.  
+
+First create a folder called ```/planets```.  
 Inside of ```/planets```, create a  file called ```circle.js``` with the following contents:
 
 ```javascript
@@ -31,7 +33,10 @@ exports.circumference = function (r) {
   return 2 * PI * r;
 };
 ````
-Next, add another file to ```/planets``` called ```earth.js``` with the following contents:
+The module ```circle.js``` has exported the functions ```area()``` and ```circumference()```. To export an object, add to the special exports object.  Variables local to the module will be private. In this example the variable ```PI``` is private to ```circle.js```.
+
+
+Next add another file to ```/planets``` called ```earth.js``` with the following contents:
 
 ```javascript
 var circle = require('./circle.js');
@@ -39,4 +44,46 @@ var radius = 6378.1;
 console.log( 'The area of the planet earth is ' + circle.area(radius) + ' km2');
 ```
 
-Now, run the app by typing ```node earth``` from within the ```planets``` directory.
+Now, run the app by typing ```node earth``` from within the ```planets``` directory. You should see the following:
+
+```shell
+The area of the planet earth is 127800490.57763624 km2
+```
+
+## require a JSON File
+
+A JSON file can be included in a project by doing a ```require('./data.json')```.  This is because ```.json``` files are parsed as JSON text files.
+Let's modify the previous example by storing the radius of all the planets in a JSON file. 
+
+In the ```planets``` directory, create a file called ```planets.json``` with the following contents:
+
+```json
+{
+  "mercury": 2440,
+  "venus":  6051,
+  "earth":  6378,
+  "mars":   3397,
+  "jupiter": 71492,
+  "saturn": 60268,
+  "uranus": 25559,
+  "neptune": 24764
+}
+```
+
+View the ```planets.json``` file by firing up a node shell from within the ```/planets``` directory and typing the following:
+
+```shell
+var planets = require('./planets.json');
+planets.neptune;
+```
+
+Try output the radius of some other plaents.
+
+Once you are comfortable with ```planets.json``` object,  update the ```earth.js``` example by importing ```planets.json``` into ```earth.js```.
+
+```javascript
+var planets = require('./planets.json');
+```
+
+Finally, update ```earth.js``` to use the circumference stored in ```planets.json```.
+

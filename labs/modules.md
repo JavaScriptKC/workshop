@@ -39,7 +39,7 @@ The module ```circle.js``` has exported the functions ```area()``` and ```circum
 Next add another file to ```/planets``` called ```earth.js``` with the following contents:
 
 ```javascript
-var circle = require('./circle.js');
+var circle = require('./circle');
 var radius = 6378.1;
 console.log( 'The area of the planet earth is ' + circle.area(radius) + ' km2');
 ```
@@ -93,4 +93,12 @@ Finally, update ```earth.js``` to use the circumference stored in ```planets.jso
 Node has several modules compiled into the binary. The core modules are defined in node's source in the ```lib/``` folder.
 Core modules are always preferentially loaded if their identifier is passed to ```require()```. For instance, ```require('http')``` will always return the built in HTTP module, even if there is a file by that name.
 
-Let's use the core module assert to test ```circle.js```.  In the ```planets/``` folder, create a file called ```test.js```.  Add
+Let's use the core module assert to test ```circle.js```.  In the ```planets/``` folder, create a file called ```test.js```.  
+In ```test.js```, require the ```assert``` module and ```circle.js``` to test the ```circle.area``` and ```circle.circumference``` methods.
+
+```javascript
+var assert = require('assert');
+var circle = require('./circle');
+```
+
+Next write a couple tests using the [documentation for assert](http://nodejs.org/api/assert.html)

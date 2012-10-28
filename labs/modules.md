@@ -87,3 +87,10 @@ var planets = require('./planets.json');
 
 Finally, update ```earth.js``` to use the circumference stored in ```planets.json```.
 
+
+## require a Core Module
+
+Node has several modules compiled into the binary. The core modules are defined in node's source in the ```lib/``` folder.
+Core modules are always preferentially loaded if their identifier is passed to ```require()```. For instance, ```require('http')``` will always return the built in HTTP module, even if there is a file by that name.
+
+Let's use the core module assert to test ```circle.js```.  In the ```planets/``` folder, create a file called ```test.js```.  Add

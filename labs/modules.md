@@ -102,3 +102,25 @@ var circle = require('./circle');
 ```
 
 Next write a couple tests using the [documentation for assert](http://nodejs.org/api/assert.html)
+
+## requiring from the node_modules directory
+
+Modules can be installed using the node package manager, npm, to be included into your application.
+For the next example, let's print out the planets in order of size. To do this, we'll include underscore.js. Before we include
+NPM, we need to install underscore by executing the following command from within the ```planets/``` directory.
+
+```npm install underscore```
+
+Now create a file called ```size.js``` and add the following:
+
+```javascript
+var sortBy = require('underscore').sortBy,
+    keys = require('underscore'.keys
+    planets = require('planets.json');
+
+planets = sortBy(keys(planets), function(k) { return planets[k]; })
+
+console.log(planets);
+````
+
+

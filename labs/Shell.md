@@ -1,8 +1,20 @@
 # A Node Shell
 
+### Overview
+
 In this lab we'll put together a simple shell. We'll interact with the filesystem and learn some useful facets of the JavaScript programming language.
 
-Commands will be provided to our shell through the process' standard in. By default, node does not enable standard in. So the first thing we'll do is enable standard in and echo the commands.
+### Time 
+
+1 hour
+
+### Objectives
+
+* Filesystem
+* The global process variable
+
+## Lab
+Commands will be provided to our shell through the process' standard in. By default, Node does not enable standard input. So the first thing we'll do is enable standard in and echo the commands.
 
 Create a new file called shell.js and add the following:
 
@@ -18,11 +30,18 @@ Before we go any further, start up our echo process.
 
 ```node shell.js```
 
-Type anything and press enter. Notice that the input is line buffered. To shut down the process press ```CTRL+C```.
+Type anything and press enter. Notice that the input is line buffered. To shut down the process press ```CTRL+C```. The output of your response might look something like this:
 
-Also, we're printing out a Buffer object. It's worth noting that, at this point, the buffer exists completely outside of the V8 heap. Interacting with this buffer will move data across the C++/JavaScript boundary. For example, calling .toString() will create a new JavaScript string containing the entire contents of the buffer. Since we're working with relatively short commands lets go ahead and call .toString() on the Buffer named ```input```.
+```
+foo
+<Buffer 64>
+bar
+<Buffer 64>
+```
 
-Now starting up the shell again and typing input will result in the expected output including the new line character.
+Note we're printing out a Buffer object. That's because the ```input``` variable does not contain the string value of your input directly. Instead, it contains a Buffer that contains the bytes from your input. It's worth noting that, at this point, the buffer exists completely outside of JavaScript memory. Interacting with this buffer will move data across the native to JavaScript boundary. For example, calling ```input.toString()``` will create a new JavaScript string containing the entire contents of the Buffer. An optional encoding can be specified as the first argument of this toString function (ie 'utf8', 'ascii'). 
+
+Since we're working with relatively short commands lets go ahead and call ```input.toString()``` on the Buffer. Now starting up the shell and typing any value will result in the expected output ending with the new line character.
 
 The next step is to parse the input string. The commands in our simple shell will take the form ```command [args...]```. A regex like this can separate the arguments from the command: ```/(\w+)(.*)/```. We can then parse the argument part of this by splitting each argument by white space.
 
@@ -34,12 +53,12 @@ stdin.on('data', function (input) {
 });
 ```
 
-Feel free to check out the result of this by logging out the value of ```command``` and ```args```.
+Feel free to check out the result of this by logging out the value of ```command``` and ```args```. You may want to add a little more logic to make this resilient to malformed input. But we'll leave that excercise up to you.
 
 
 ## Our first command: pwd
 
-```pwd``` is a unix program to print out the current working directory. Let's implement this in our shell.
+```pwd``` is a program to print out the current working directory. Let's implement this in our shell.
 
 ```js
 var commands = {
@@ -56,18 +75,31 @@ stdin.on('data', function (input) {
 });
 ```
 
+To clarify what's happening above here's sample output of executing the regex. We are accessing ```matches[1]``` because it's the first group (groups are specified with the parenthesis). If you are unfamilar with Regular Expressions a good source to learn more is at [Regular-Expressions.info](http://www.regular-expressions.info/). Here's an example of running the regex above at the Node REPL.
+
+```JavaScript
+> var input = "cmd_name arg1 arg2"
+'cmd_name arg1 arg2'
+> var matches = input.match(/(\w+)(.*)/)
+> matches
+[ 'cmd_name arg1 arg2',
+  'cmd_name',
+  ' arg1 arg2',
+  index: 0,
+  input: 'cmd_name arg1 arg2' ]
+```
+
 Now, jump back to your terminal and give our shell a try!
 
 ```
 node shell.js
 pwd
 /users/you/simple-shell/
-
 ```
 
 ## A parameterized command: ls
 
-```ls [directory]```: prints the contents of a directory. If the directory argument is left out it will print the contents of the current working directory.
+```ls [directory]```: prints the contents of a directory. If the directory argument is not specified it will print the contents of the current working directory.
 
 In order to process the arguments we need to add a little more parsing logic to the input. Since we split the command from the arguments with a regex we can now parse the second half of that string. Arguments are separated by white space so a simple regex split will give us what we need. In order to ignore unecessary white space let's trim the args string. We'll then pass this string array to our command function.
 
@@ -75,7 +107,7 @@ In order to process the arguments we need to add a little more parsing logic to 
 stdin.on('data', function (input) {
    var matches = input.toString().match(/(\w+)(.*/)/);
    var command = matches[1].toLowerCase();
-   var args = matches[2].trim().split(/\s+/);
+   var args = matches[2].trim().split(/\s+/); // split on white space
 
    commands[command](args);
 });
@@ -100,13 +132,13 @@ var commands = {
 
 Notice this part of the ls implementation: ```args[0] || process.cwd()``` 
 
-Unlike many other languages, JavaScript doesn't care if you access an index out of bounds of an array. If an element does not exist ```undefined``` will be returned. Using the ```||``` syntax will test the existence of the return value of args[0] and if it doesn't exist will execute the next part of the statement: ```process.cwd()```. This is a common pattern for assigning a default value.
+Unlike many other languages, JavaScript doesn't care if you access an index out of bounds of an array. If an element does not exist ```undefined``` will be returned. Using the ```x || y``` syntax will test the existence of x and if it doesn't exist will return y. This is a common pattern for assigning a default value.
 
 Feel free to implement your favorite shell command as an exercise or follow along with the next part of this lab where we'll implement ```tail```.
 
 ## Implementing tail
 
-```tail [N]```: prints the last N lines of a file. This requires us to locate all of the newlines in a file and trim down to last N number of lines to print. If N is not specified we'll use 10 as the default.
+```tail [N]```: prints the last N lines of a file. This requires us to locate all of the newlines in a file and trim down to last N number of lines to print. If N is not specified we'll print the last 10 lines.
 
 Implementing this will give you exposure to file streams, getting formation about a file, and useful Array functions.
 

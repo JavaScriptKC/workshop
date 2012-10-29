@@ -14,6 +14,27 @@
 - How to require from the node_modules folder
 - How to export methods in a module
 
+## How do modules work?
+
+In node, modules work by exporting methods or values.  If this were visualized in JavaScript it might be similar to this:
+
+```javascript
+var exports = {};
+(function() {
+  var a = 10;
+  exports.foo = a * 10;
+}());
+
+console.log(exports.a); // undefined
+console.log(exports.foo); // 100
+```
+
+If written into a node module, this would be written as:
+
+```javascript
+var a = 10;
+exports.foo = a * 10;
+```
 
 ## require() a node module
 
@@ -106,8 +127,7 @@ Next write a couple tests using the [documentation for assert](http://nodejs.org
 ## requiring from the node_modules directory
 
 Modules can be installed using the node package manager, npm, to be included into your application.
-For the next example, let's print out the planets in order of size. To do this, we'll include underscore.js. Before we include
-NPM, we need to install underscore by executing the following command from within the ```planets/``` directory.
+For the next example, let's print out the planets in order of size. To do this, we'll include underscore.js. First we need to install underscore by executing the following command from within the ```planets/``` directory.
 
 ```npm install underscore```
 

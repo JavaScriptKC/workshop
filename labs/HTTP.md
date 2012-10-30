@@ -64,7 +64,7 @@ In this lab we will create an HTTP server that responds to all requests with a s
 
    A call to ```res.end()``` is required in order to let the client know the server has finished the response.
 
-7. Visit ```http://localhost:8080``` once again. This time there should be a page with no content, but we are not here to serve blank pages. Let's actually write some data. The response stream has a ```write``` function that takes a string to write to the output. 
+7. Visit ```http://localhost:8080``` once again. This time there should be a page with no conten. We are not here to serve blank pages so let's actually output some content. The response stream has a ```write``` function that takes a string to write to the output. 
 
    ```JavaScript
    var http = require('http');

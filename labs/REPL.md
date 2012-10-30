@@ -18,97 +18,95 @@
 
 ## Starting the Node REPL
 
-1. To launch the Node REPL open a command prompt or terminal and execute ```node```. Once open, evaluate a few simple expressions
+To launch the Node REPL open a command prompt or terminal and execute ```node```. Once open, evaluate a few simple expressions
 
-   ```JavaScript
-   > 1 + 5
-   6
-   > function add(a, b) { return a + b; }
-   undefined
-   > add(1, 5)
-   6
-   ```
+```JavaScript
+> 1 + 5
+6
+> function add(a, b) { return a + b; }
+undefined
+> add(1, 5)
+6
+```
 
-1. Notice the result of the statement executed is printed on the following line without ```>```. 
+Notice the result of the statement executed is printed on the following line without ```>```. 
 
-1. If you forgot to assign the value of the previously executed statement, the Node REPL provides a useful syntax to access the previous result.
+If you forgot to assign the value of the previously executed statement, the Node REPL provides a useful syntax to access the previous result.
 
-   ```JavaScript
-   > "Node Rocks!"
-   "Node Rocks!"
-   > _
-   "Node Rocks!"
-   > var lastResult = _
-   undefined
-   > lastResult
-   "Node Rocks!"
-   ```
+```JavaScript
+> "Node Rocks!"
+"Node Rocks!"
+> _
+"Node Rocks!"
+> var lastResult = _
+undefined
+> lastResult
+"Node Rocks!"
+```
 
 ## Arrays
 
-1. There are a few different ways to create arrays in JavaScript. First, you can use the array syntax, for example ```[1,3,3,7]```. This will create an array with four elements. A major difference between arrays in JavaScript and many other languages is that they are mutable and the size is not required to create. Another way of creating an array is with the ```Array``` constructor. 
+There are a few different ways to create arrays in JavaScript. First, you can use the array syntax, for example ```[1,3,3,7]```. This will create an array with four elements. A major difference between arrays in JavaScript and many other languages is that they are mutable and the size is not required to create. Another way of creating an array is with the ```Array``` constructor. 
+    
+  * The array Initializer:
 
+    ```JavaScript
+    > [1, 2]
+    [1, 2]
+    > [1,2].length
+    2
+    ```
+  * Using the array constructor function:
 
-   * The array Initializer:
+    ```JavaScript
+    > new Array()
+    []
+    > _.length
+    0
+    ```
 
-      ```JavaScript
-      > [1, 2]
-      [1, 2]
-      > [1,2].length
-      2
-      ```
+Adding an item to an array:
 
-   * Using the array constructor function:
+```JavaScript
+> var a =  ['apple', 'banana', 'kiwi']
+['apple', 'banana', 'kiwi']
+> a.length
+3
+> a.push("lemon")
+4 //push returns the size of the array after the push operation completes
+> a.unshift("lime") 
+5 //unshift adds an element to the beginning of the array and returns the new length
+```
 
-      ```JavaScript
-      > new Array()
-      []
-      > _.length
-      0
-      ```
+Removing an item from an array: 
 
-1. Adding an item to an array:
+```JavaScript
+> a
+['lime', 'apple', 'banana', 'kiwi', 'lemon']
+> a.pop()
+'lemon' //pop removes and returns the last value in the array.
+> a.shift()
+'lime' //shift removes and returns the first value in the array.
+```
 
-   ```JavaScript
-   > var a =  ['apple', 'banana', 'kiwi']
-   ['apple', 'banana', 'kiwi']
-   > a.length
-   3
-   > a.push("lemon")
-   4 //push returns the size of the array after the push operation completes
-   > a.unshift("lime") 
-   5 //unshift adds an element to the beginning of the array and returns the new length
-   ```
+Copying an array:
 
-1. Removing an item from an array: 
-
-   ```JavaScript
-   > a
-   ['lime', 'apple', 'banana', 'kiwi', 'lemon']
-   > a.pop()
-   'lemon' //pop removes and returns the last value in the array.
-   > a.shift()
-   'lime' //shift removes and returns the first value in the array.
-   ```
-
-1. Copying an array:
-
-   ```JavaScript
-   > a
-   ['apple', 'banana', 'kiwi']
-   > a.slice(0, 1)
-   ['apple'] //slice can be used to copy a portion of an array to a new array. The first argument is the start index and the second argument is the end index. This is not inclusive on the end.
-   > a
-   ['apple', 'banana', 'kiwi'] //the array is not changed.
-   > a.slice(0)
-   ['apple', 'banana', 'kiwi'] //Provides a way to copy the entire array.
-   ```
+```JavaScript
+> a
+['apple', 'banana', 'kiwi']
+> a.slice(0, 1)
+['apple'] //slice can be used to copy a portion of an array to a new array. The first argument is the start index and the second argument is the end index. This is not inclusive on the end.
+> a
+['apple', 'banana', 'kiwi'] //the array is not changed.
+> a.slice(0)
+['apple', 'banana', 'kiwi'] //Provides a way to copy the entire array.
+```
 
 ## Objects
 
-1. There's two primary ways to create a JavaScript object: ```var o = {}``` and ```var o = new Object()```.
+There's two primary ways to create a JavaScript object: ```var o = {}``` and ```var o = new Object()```.
 
-1. Setting properties using the dot syntax:
+Setting properties using the dot syntax:
 
 ```JavaScript
 > var o = {}
@@ -121,7 +119,7 @@ undefined
 3
 ```
 
-1. Properties using the array syntax:
+Properties using the array syntax:
 
 ```JavaScript
 > o['foo']
@@ -130,7 +128,7 @@ undefined
 3
 ```
 
-### Objects are compositional: 
+Objects are compositional: 
 
 ```JavaScript
 > o.bar = [1, 2, 3, 4]
@@ -161,13 +159,13 @@ function () { }
 
 //Declare a function that takes a callback argument
 var Foo = function (callback) {
-   //Foo function body
-   callback();
+    //Foo function body
+    callback();
 }
 
 //An anonymous function used as a callback argument
 Foo(function () {
-   //Callback function body
+    //Callback function body
 });
 ```
 

@@ -128,7 +128,8 @@ Properties using the array syntax:
 3
 ```
 
-Objects are compositional: 
+Objects can be composed of other objects: 
+
 
 ```JavaScript
 > o.bar = [1, 2, 3, 4]
@@ -145,13 +146,13 @@ Objects are compositional:
 
 ## Functions
 
-JavaScript functions are declared using the ```function``` keyword. 
+1. JavaScript functions are declared using the ```function``` keyword. 
 
 ```JavaScript
 var Foo = function () { }
 ```
 
-Functions that do not have a name are *Anonymous Functions*. These are commonly used as callback arguments to other functions.
+1. Functions that do not have a name are *Anonymous Functions*. These are commonly used as callback arguments to other functions.
 
 ```JavaScript
 //Anonymous function declaration
@@ -171,14 +172,14 @@ Foo(function () {
 
 ## Multi-line statements
 
-The Node REPL allows for multi-line statements to be executed. When a line cannot be processed as a complete JavaScript statement the Node REPL prompts for more input:
+1. The Node REPL allows for multi-line statements to be executed. When a line cannot be processed as a complete JavaScript statement the Node REPL prompts for more input (this example starts a functional closure but does not terminate it with a closing bracket):
 
 ```
 > var boo = function () {
 ... 
 ```
 
-The ```...``` indicates that the Node REPL expects more input. ```CTRL+C``` can be used to terminate the multi-line statement. Now, define a multi-line function and execute it: 
+1. The ```...``` indicates that the Node REPL expects more input. ```CTRL+C``` can be used to terminate the multi-line statement. Now, define a multi-line function and execute it: 
 
 ```JavaScript
 > var boo = function () {
@@ -189,11 +190,11 @@ undefined
 'Hello World!'
 ```
 
-## Exiting 
+## Exiting the REPL
 
 Exiting the Node REPL can be done many ways including killing the process. However, the most common way is by pressing ```CTRL+C``` twice. 
 
-### Exiting programatically:
+### Exiting Node programatically:
 
 ```JavaScript
 process.exit()

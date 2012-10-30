@@ -20,7 +20,7 @@
 In this lab we will create an HTTP server that responds to all requests with a simple HTML template.
 
 1. Create a new file named ```server.js``` in a directory of your choice.
-2. Include the HTTP core module using the ```require(module)``` function and assign the return value to a variable named ```http```. 
+2. Include the HTTP core module using the ```require(moduleName)``` function and assign the return value to a variable named ```http```. 
    
    ```JavaScript
    var http = require('http');
@@ -45,7 +45,7 @@ In this lab we will create an HTTP server that responds to all requests with a s
    ```
 5. Launch your server at the command line: ```node server.js```
 
-6. Open your browser and navigate to ```http://localhost:8080``` (replace 8080 with whatever port you chose if different). You will notice that your browser seems to hang and will eventually timeout. This is because our HTTP is not yet doing anything useful with the incoming connection. Let's start by responding to the request with a 200 HTTP status code.
+6. Open your browser and navigate to ```http://localhost:8080``` (replace 8080 with whatever port you chose if different). You will notice that your browser seems to hang and will eventually timeout. This is because our server is not yet doing anything useful with the incoming connection. Let's start by responding to the request with a 200 HTTP status code.
 
    Here's where we are so far.
    

@@ -16,17 +16,17 @@ In this lab we'll put together a simple shell. We'll interact with the filesyste
 ## Lab
 Commands will be provided to our shell through the process' standard in. By default, Node does not enable standard input. So the first thing we'll do is enable standard in and echo the commands.
 
-Create a new file called shell.js and add the following:
+Create a new file called ``shell.js`` and add the following:
 
 ```js
 var stdin = process.openStdin();
 
 stdin.on('data', function(input) {
-   console.log(input);
+    console.log(input);
 });
 ```
 
-Before we go any further, start up our echo process.
+Before we go any further, let's experiment with what the above code does.
 
 ```node shell.js```
 
@@ -39,17 +39,23 @@ bar
 <Buffer 64>
 ```
 
-Note we're printing out a Buffer object. That's because the ```input``` variable does not contain the string value of your input directly. Instead, it contains a Buffer that contains the bytes from your input. It's worth noting that, at this point, the buffer exists completely outside of JavaScript memory. Interacting with this buffer will move data across the native to JavaScript boundary. For example, calling ```input.toString()``` will create a new JavaScript string containing the entire contents of the Buffer. An optional encoding can be specified as the first argument of this toString function (ie 'utf8', 'ascii'). 
+Note we're printing out a ```Buffer``` object. That's because the ```input``` variable does not contain the string value of your input directly.
+
+It's worth noting that, at this point, the buffer exists completely outside of JavaScript memory. Interacting with this buffer will move data across the native to JavaScript boundary. For example, calling ```input.toString()``` will create a new JavaScript string containing the entire contents of the Buffer. An optional encoding can be specified as the first argument of the toString function (ie ```input.toString('utf8')```). 
 
 Since we're working with relatively short commands lets go ahead and call ```input.toString()``` on the Buffer. Now starting up the shell and typing any value will result in the expected output ending with the new line character.
 
-The next step is to parse the input string. The commands in our simple shell will take the form ```command [args...]```. A regex like this can separate the arguments from the command: ```/(\w+)(.*)/```. We can then parse the argument part of this by splitting each argument by white space.
+The next step is to parse the input string. The commands in our simple shell will take the form:
+
+ ```command [args...]```
+
+ A regex can separate the arguments from the command: ```/(\w+)(.*)/```. We can then parse the argument part of this by splitting each argument by white space.
 
 ```js
 stdin.on('data', function (input) {
-   var matches = input.toString().match(/(\w+)(.*/)/);
-   var command = matches[1].toLowerCase();
-   var args = matches[2].trim().split(/\s+/);
+    var matches = input.toString().match(/(\w+)(.*/)/);
+    var command = matches[1].toLowerCase();
+    var args = matches[2].trim().split(/\s+/);
 });
 ```
 
@@ -58,41 +64,52 @@ Feel free to check out the result of this by logging out the value of ```command
 
 ## Our first command: pwd
 
-```pwd``` is a program to print out the current working directory. Let's implement this in our shell.
+```pwd``` is a program to print out the current working directory. Let's implement this in our shell. 
 
 ```js
+var stdin = process.openStdin();
+
 var commands = {
-   'pwd': function () {
-      console.log(process.cwd());
-   }
+    'pwd': function () {
+        console.log(process.cwd());
+    }
 };
 
 stdin.on('data', function (input) {
-   var matches = input.toString().match(/(\w+)(.*/)/);
-   var command = matches[1].toLowerCase();
+    var matches = input.toString().match(/(\w+)(.*/)/);
+    var command = matches[1].toLowerCase();
 
-   commands[command]();
+    commands[command]();
 });
 ```
 
-To clarify what's happening above here's sample output of executing the regex. We are accessing ```matches[1]``` because it's the first group (groups are specified with the parenthesis). If you are unfamilar with Regular Expressions a good source to learn more is at [Regular-Expressions.info](http://www.regular-expressions.info/). Here's an example of running the regex above at the Node REPL.
+To clarify what's happening above here's sample output of executing the regex at the Node REPL. The input is ```cmd_name arg1 arg2```. 
 
 ```JavaScript
 > var input = "cmd_name arg1 arg2"
 'cmd_name arg1 arg2'
 > var matches = input.match(/(\w+)(.*)/)
 > matches
-[ 'cmd_name arg1 arg2',
-  'cmd_name',
-  ' arg1 arg2',
-  index: 0,
-  input: 'cmd_name arg1 arg2' ]
+[ 'cmd_name arg1 arg2',        //matches[0]
+  'cmd_name',                  //matches[1]
+  ' arg1 arg2',                //matches[2]
+  index: 0,                    //matches[3]
+  input: 'cmd_name arg1 arg2'] //matches[4]
+
 ```
+We are accessing ```matches[1]``` because it's the first group (groups are specified with the parenthesis). If you are unfamilar with Regular Expressions a good source to learn more is at [Regular-Expressions.info](http://www.regular-expressions.info/). 
 
 Now, jump back to your terminal and give our shell a try!
 
+Start up the shell with Node:
+
 ```
 node shell.js
+```
+
+Execute our one and only command: 
+
+```
 pwd
 /users/you/simple-shell/
 ```
@@ -101,15 +118,22 @@ pwd
 
 ```ls [directory]```: prints the contents of a directory. If the directory argument is not specified it will print the contents of the current working directory.
 
-In order to process the arguments we need to add a little more parsing logic to the input. Since we split the command from the arguments with a regex we can now parse the second half of that string. Arguments are separated by white space so a simple regex split will give us what we need. In order to ignore unecessary white space let's trim the args string. We'll then pass this string array to our command function.
+In order to process the arguments we need to add a little more parsing logic to the input. Since we split the command from the arguments with a regex we can now parse the second half of that string. Arguments are separated by white space so a simple regex split will give us what we need. In order to ignore unecessary white space let's trim the args string first. 
+
+#### A quick side note: 
+The result of ```'some string'.split(/\s+/)``` is an array  ```['some', 'string']```. 
+
+This example could have been done with ```'some string'.split(' ')``` but would not account for other types of white space or multiple white spaces. 
+
+For example: ```'some__string'.split('_')``` would result in ```['some', '', 'string']```
 
 ```js
 stdin.on('data', function (input) {
-   var matches = input.toString().match(/(\w+)(.*/)/);
-   var command = matches[1].toLowerCase();
-   var args = matches[2].trim().split(/\s+/); // split on white space
+    var matches = input.toString().match(/(\w+)(.*/)/);
+    var command = matches[1].toLowerCase();
+    var args = matches[2].trim().split(/\s+/); // split on white space
 
-   commands[command](args);
+    commands[command](args);
 });
 ```
 
@@ -117,16 +141,16 @@ To implement ls add a new property to our object named 'ls' like this:
 
 ```js
 var commands = {
-   'pwd': function () {
-      console.log(process.cwd());
-   },
-   'ls': function (args) {
-      fs.readdir(args[0] || process.cwd(), function (err, entries) {
-         entries.forEach(function (e) {
-            console.log(e);
-         });
-      });
-   }
+    'pwd': function () {
+        console.log(process.cwd());
+    },
+    'ls': function (args) {
+        fs.readdir(args[0] || process.cwd(), function (err, entries) {
+            entries.forEach(function (e) {
+                console.log(e);
+            });
+        });
+    }
 };
 ```
 
@@ -146,15 +170,15 @@ First, let's add the tail command to our commands object. After this point all e
 
 ```js
 var commands = {
-   'pwd': function () {
-      console.log(process.cwd());
-   },
-   'ls': function (args) {
-      // Implementation of ls here
-   },
-   'tail': function (args) {
-      // Implemtation of tail here.
-   };
+    'pwd': function () {
+        console.log(process.cwd());
+    },
+    'ls': function (args) {
+        // Implementation of ls here
+    },
+    'tail': function (args) {
+        // Implemtation of tail here.
+    };
 };
 ```
 
@@ -169,9 +193,9 @@ Get the length of the file in bytes. To do this we'll need to stat the file path
 ```
 // this is declared as a property of the commands object
 'tail': function (args) {
-   var stats = fs.statSync(args[0]);
+    var stats = fs.statSync(args[0]);
 
-   console.log(stats);
+    console.log(stats);
 }
 ```
 
@@ -199,24 +223,24 @@ With these properties we can create a read stream that starts at the beginning o
 
 ```js
 'tail': function (args) {
-   var stats = fs.statSync(args[0]);
-   
-   var options = { 
-     flags: 'r',
-     encoding: 'utf8',
-     mode: 0666,
-     bufferSize: stats.blksize,
-     start: 0,
-     end: stats.size
-   };
-   
-   var fileStream = fs.createReadStream(args[0], options);
+    var stats = fs.statSync(args[0]);
+    
+    var options = { 
+      flags: 'r',
+      encoding: 'utf8',
+      mode: 0666,
+      bufferSize: stats.blksize,
+      start: 0,
+      end: stats.size
+    };
+    
+    var fileStream = fs.createReadStream(args[0], options);
 
-   fileStream.on('data', function (data) {
-      //This anonymous function (callback) will be 
-      //executed for every blksize(bufferSize from options) 
-      //bytes of the file.
-   });
+    fileStream.on('data', function (data) {
+        //This anonymous function (callback) will be 
+        //executed for every blksize(bufferSize from options) 
+        //bytes of the file.
+    });
 }
 ```
 
@@ -231,14 +255,14 @@ var offset = 0;
 var index = 0;
 
 fileStream.on('data', function (data) {
-   for (var i = 0; i < data.length; i++) {
-      if (data[i] === '\n') {
-         newLines[index] = (offset * stats.blksize) + i;
-         index = ++index % numLines; 
-      }
+    for (var i = 0; i < data.length; i++) {
+        if (data[i] === '\n') {
+            newLines[index] = (offset * stats.blksize) + i;
+            index = ++index % numLines; 
+        }
 
-      offset++;
-   }
+        offset++;
+    }
 });
 ```
 
@@ -246,20 +270,20 @@ Now, we need to add an event listener for the ```end``` event. In this callback 
 
 ```js
 fileStream.on('end', function () {
-   if (typeof newLines[index] === 'number') {
-      var position = newLines[index] + 1;
-   } 
-   else {
-      var position = 0;
-   }
-   
-   var bytesToRead = stats.size - position;
+    if (typeof newLines[index] === 'number') {
+        var position = newLines[index] + 1;
+    } 
+    else {
+        var position = 0;
+    }
+    
+    var bytesToRead = stats.size - position;
 
-   fs.open(args[0], 'r', function (err, fd) {
-      var buffer = new Buffer(bytesToRead);
-      fs.readSync(fd, buffer, 0, bytesToRead, position);
-      console.log(buffer.toString())
-   });
+    fs.open(args[0], 'r', function (err, fd) {
+        var buffer = new Buffer(bytesToRead);
+        fs.readSync(fd, buffer, 0, bytesToRead, position);
+        console.log(buffer.toString())
+    });
 });
 ```
 
@@ -267,9 +291,9 @@ If you're new to JavaScript you may be confused by the check to see if an elemen
 
 ```js
 if (typeof newLines[index] !== 'undefined') {
-   var position = newLines[index] + 1;
+    var position = newLines[index] + 1;
 } else {
-   var position = 0;
+    var position = 0;
 }
 ```
 

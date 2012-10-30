@@ -78,7 +78,7 @@ In this lab we will create an HTTP server that responds to all requests with a s
    server.listen(8080);
    ```
    
-### Write a files contents to HTTP response
+### Writing the content of a file to the response
 
 1. To load a files content from disk:
 
@@ -86,14 +86,14 @@ In this lab we will create an HTTP server that responds to all requests with a s
    var fs = require('fs');
 
    fs.readFile('index.html', function (err, data) {
-      if(!err) {
+      if (!err) {
          console.log(data); 
       } 
    });
 
    ```
 
-1. This won't work because theres no index.html in our directory. Let's create that with something like this:
+1. This won't work because theres no ```index.html``` in our directory. Let's create that with something like this:
 
    ```HTML
    <html>
@@ -116,7 +116,7 @@ In this lab we will create an HTTP server that responds to all requests with a s
       res.statusCode = 200;
 
       fs.readFile('index.html', function (err, data) {
-            if(!err) {
+            if (!err) {
               res.write(data);
               res.end();
             } 
@@ -155,7 +155,7 @@ var templateEngine = function (template, data) {
 };
 ```
 
-1. This function takes a template string and a data object. It searches for instances of ```{variableName}``` and replaces them with data.variableName. Feel free to copy/paste this code unless you want extra practice with JavaScript.
+1. This function takes a template string and a data object. It searches for the pattern ```{variableName}``` and replaces matches with ```data.variableName```. Feel free to copy/paste this code unless you want extra practice writing JavaScript.
 
 Let's use this simple template engine to parse the content of our ```index.html``` file.
 
@@ -190,8 +190,8 @@ var server = http.createServer(function (req, res) {
    res.statusCode = 200;
 
    fs.readFile('index.html', function (err, data) {
-      if(!err) {
-         res.write(templateEngine(data, {}));
+      if (!err) {
+         res.write(templateEngine(data, {})); // use our template engine here
          res.end();
       } 
    });
@@ -200,7 +200,7 @@ var server = http.createServer(function (req, res) {
 server.listen(8080);
 ```
 
-Now try this in the browser. You'll notice that the output is the same. Let's change ```index.html``` a little to take advantage of our template engine.
+Now try this in the browser. You'll notice that the output is the same. Let's update ```index.html``` to take advantage of our template engine.
 
 ```HTML
 <html>
@@ -222,20 +222,20 @@ Now try this in the browser. You'll notice that the output is the same. Let's ch
 The above modifications require several properties on our data object (name, node, v8, url, time), let's assign those:
 
 ```JavaScript
-   ... (code omitted from example)
-   fs.readFile('index.html', function (err, data) {
-      if(!err) {
-        res.write(templateEngine(data, {
-          name: 'Ryan Dahl',
-          node: process.versions.node,
-          v8: process.versions.v8,
-          time: new Date(),
-          url: req.url
-        }));
-        res.end();
-      } 
-   });
-   ... (code omitted from example)
+... (code omitted from example)
+fs.readFile('index.html', function (err, data) {
+   if(!err) {
+     res.write(templateEngine(data, {
+       name: 'Ryan Dahl',
+       node: process.versions.node,
+       v8: process.versions.v8,
+       time: new Date(),
+       url: req.url
+     }));
+     res.end();
+   } 
+});
+... (code omitted from example)
 ```
 
 Now our output from the browser (if we visited ```http://localhost:8080/foo```) should be: 

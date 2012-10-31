@@ -2,6 +2,8 @@
 
 ## Overview
 
+In this lab you'll learn how to use the Node REPL to execute ad-hoc JavaScript statements. By the end you should be comfortable defining strings, objects, arrays, and functions.
+
 ### Time 
 
 30 minutes

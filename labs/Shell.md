@@ -125,7 +125,7 @@ The result of ```'some string'.split(/\s+/)``` is an array  ```['some', 'string'
 
 This example could have been done with ```'some string'.split(' ')``` but would not account for other types of white space or multiple white spaces. 
 
-For example: ```'some__string'.split('_')``` would result in ```['some', '', 'string']```
+For example: ```'some__string'.split('_')``` would result in ```['some', '', 'string']``` (underscores used because multiple consecutive white spaces were ignored by Markdown parser)
 
 ```js
 stdin.on('data', function (input) {
@@ -144,7 +144,7 @@ var commands = {
     'pwd': function () {
         console.log(process.cwd());
     },
-    'ls': function (args) {
+    'ls': function (args) { // New property added here. Note the comma on the previous line
         fs.readdir(args[0] || process.cwd(), function (err, entries) {
             entries.forEach(function (e) {
                 console.log(e);
@@ -156,13 +156,13 @@ var commands = {
 
 Notice this part of the ls implementation: ```args[0] || process.cwd()``` 
 
-Unlike many other languages, JavaScript doesn't care if you access an index out of bounds of an array. If an element does not exist ```undefined``` will be returned. Using the ```x || y``` syntax will test the existence of x and if it doesn't exist will return y. This is a common pattern for assigning a default value.
+Unlike many other languages, JavaScript doesn't care if you access an index out of bounds of an array. If an element does not exist at the index ```undefined``` will be returned. Using the ```x || y``` syntax will test the existence of ```x``` and if it doesn't exist will evaluate to ```y```. This is a common pattern for assigning a default value. 
 
 Feel free to implement your favorite shell command as an exercise or follow along with the next part of this lab where we'll implement ```tail```.
 
 ## Implementing tail
 
-```tail [N]```: prints the last N lines of a file. This requires us to locate all of the newlines in a file and trim down to last N number of lines to print. If N is not specified we'll print the last 10 lines.
+```tail filename [N]```: prints the last N lines of a file. This requires us to locate all of the newlines in a file and trim down to last N number of lines to print. If N is not specified we'll print the last 10 lines.
 
 Implementing this will give you exposure to file streams, getting formation about a file, and useful Array functions.
 
@@ -188,7 +188,9 @@ First, pull in the ```fs``` module at the top of the file just after ```var stdi
 var fs = require('fs');
 ```
 
-Get the length of the file in bytes. To do this we'll need to stat the file path provided as the first argument.
+Get the length of the file in bytes. 
+
+To do this we'll need to stat the file path provided as the first argument.
 
 ```
 // this is declared as a property of the commands object
@@ -209,7 +211,7 @@ The stat object looks like this:
   uid: 501,
   gid: 20,
   rdev: 0,
-  size: 8066,
+  size: 8066, 
   blksize: 4096,
   blocks: 16,
   atime: Sat Oct 13 2012 15:23:59 GMT-0500 (CDT),
@@ -217,9 +219,9 @@ The stat object looks like this:
   ctime: Sat Oct 13 2012 13:40:04 GMT-0500 (CDT) }
 ```
 
-We're concerned with the size and blksize properties for this exercise.
+We're concerned with the size and blksize properties of the stat object for this exercise.
 
-With these properties we can create a read stream that starts at the beginning of the file and continues until to the end. Each ```blksize``` bytes of the file will be provided to us through a callback. Here's the implementation:
+With these properties we can create a read stream that starts at the beginning of the file and continues to the end. Each ```blksize``` bytes of the file will be provided to us through a callback. Here's the implementation:
 
 ```js
 'tail': function (args) {
@@ -237,31 +239,32 @@ With these properties we can create a read stream that starts at the beginning o
     var fileStream = fs.createReadStream(args[0], options);
 
     fileStream.on('data', function (data) {
-        //This anonymous function (callback) will be 
-        //executed for every blksize(bufferSize from options) 
+        //This callback (anonymous function) will be 
+        //executed for every blksize (bufferSize from options) 
         //bytes of the file.
     });
 }
 ```
 
-In our callback we'll examine each character to see if it's a newline ```\n```.
+In our callback we'll examine each character in the buffer to see if it's a newline ```\n```. For each new line we'll track the byte offset for which it occurred in the file. 
 
 We'll create an array to store the byte offset of each newline for the last N+1 lines. The +1 is so we can keep around an extra trailing line to start reading from.
 
+![Algorithm Explained](/path/to/img.jpg "An illustration of the algorithm in use.")
+
 ```js
 var numLines = (args[1] || 10) + 1;
-var newLines = new Array(numLines);
-var offset = 0;
-var index = 0;
+var newLineOffsets = new Array(numLines);
+var offset = 0; // The offset in the file
+var index = 0;  // The array index for storing the next newline location
 
 fileStream.on('data', function (data) {
     for (var i = 0; i < data.length; i++) {
         if (data[i] === '\n') {
-            newLines[index] = (offset * stats.blksize) + i;
+            newLineOffsets[index] = offset + i;
             index = ++index % numLines; 
         }
-
-        offset++;
+        offset += data.length;
     }
 });
 ```
@@ -270,8 +273,8 @@ Now, we need to add an event listener for the ```end``` event. In this callback 
 
 ```js
 fileStream.on('end', function () {
-    if (typeof newLines[index] === 'number') {
-        var position = newLines[index] + 1;
+    if (typeof newLineOffsets[index] === 'number') {
+        var position = newLineOffsets[index] + 1;
     } 
     else {
         var position = 0;
@@ -287,11 +290,11 @@ fileStream.on('end', function () {
 });
 ```
 
-If you're new to JavaScript you may be confused by the check to see if an element is a number. This ensures ```newLines[index]``` has been set to a number. If the value was never set it would be ```undefined```. Alternatively, this could have been:
+If you're new to JavaScript you may be confused by the check to see if an element is a number. This ensures ```newLineOffsets[index]``` has been set to a number. If the value was never set it would be ```undefined```. Alternatively, this could have been:
 
 ```js
-if (typeof newLines[index] !== 'undefined') {
-    var position = newLines[index] + 1;
+if (typeof newLineOffsets[index] !== 'undefined') {
+    var position = newLineOffsets[index] + 1;
 } else {
     var position = 0;
 }

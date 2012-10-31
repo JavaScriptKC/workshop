@@ -18,7 +18,7 @@ Anyone has the ability to create an NPM package. Some might think this is a flaw
 
 NPM provides statistics on its main website that can help those in search of a new package to have an idea of what they're getting. Simple statistics such as total downloads on a weekly basis and overall can answer the question of is this package still used by others. Number of dependents of a package is also an excellent indicator of how useful and stable a package is.
 
-![An example of a highly depended on module.](/images/underscore_npm.png)
+![An example of a highly depended on module.](https://raw.github.com/nodekc/workshop/master/lectures/images/underscore_npm.png)
 
 NPM is managed through a command line interface using the command ```npm```. There's a ton of arguments that can be provided to perform different actions. The full list of arguments can be discovered by executing ```npm -l```.
 

@@ -150,27 +150,27 @@ Objects can be composed of other objects:
 
 1. JavaScript functions are declared using the ```function``` keyword. 
 
-```JavaScript
-var Foo = function () { }
-```
+        ```JavaScript
+        var Foo = function () { }
+        ```
 
 1. Functions that do not have a name are *Anonymous Functions*. These are commonly used as callback arguments to other functions.
 
-```JavaScript
-//Anonymous function declaration
-function () { }
-
-//Declare a function that takes a callback argument
-var Foo = function (callback) {
-    //Foo function body
-    callback();
-}
-
-//An anonymous function used as a callback argument
-Foo(function () {
-    //Callback function body
-});
-```
+        ```JavaScript
+        //Anonymous function declaration
+        function () { }
+        
+        //Declare a function that takes a callback argument
+        var Foo = function (callback) {
+            //Foo function body
+            callback();
+        }
+        
+        //An anonymous function used as a callback argument
+        Foo(function () {
+            //Callback function body
+        });
+        ```
 
 ## Multi-line statements
 

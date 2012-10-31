@@ -176,21 +176,21 @@ Foo(function () {
 
 1. The Node REPL allows for multi-line statements to be executed. When a line cannot be processed as a complete JavaScript statement the Node REPL prompts for more input (this example starts a functional closure but does not terminate it with a closing bracket):
 
-```
-> var boo = function () {
-... 
-```
+        ```
+        > var boo = function () {
+        ... 
+        ```
 
 1. The ```...``` indicates that the Node REPL expects more input. ```CTRL+C``` can be used to terminate the multi-line statement. Now, define a multi-line function and execute it: 
 
-```JavaScript
-> var boo = function () {
-..... return "Hello World!";
-..... }
-undefined
-> boo()
-'Hello World!'
-```
+        ```JavaScript
+        > var boo = function () {
+        ..... return "Hello World!";
+        ..... }
+        undefined
+        > boo()
+        'Hello World!'
+        ```
 
 ## Exiting the REPL
 

@@ -30,7 +30,7 @@ var commands = {
             flags: 'r',
             encoding: 'utf8',
             mode: 0666,
-            bufferSize: stats.blksize,
+            bufferSize: 10,
             start: 0,
             end: stats.size
          };
@@ -39,7 +39,7 @@ var commands = {
          // Keep track of one extra newline
          // So we can start reading in the contents starting
          // at the next character
-         var numLines = 1 + 1; 
+         var numLines = (args[1] || 10) + 1; 
          var newLines = new Array(numLines);
          var index = 0;
 
@@ -48,12 +48,12 @@ var commands = {
          fileStream.on('data', function (data) {
             for (var i = 0; i < data.length; i++) { 
                if (data[i] === '\n') {
-                  newLines[index] = (offset * stats.blksize) + i;
+                  newLines[index] = offset + i;
                   index = ++index % numLines;
                }
             }
-
-            offset++;
+            console.log(offset);
+            offset += data.length;
          });
 
          fileStream.on('end', function () {

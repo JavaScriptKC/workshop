@@ -250,7 +250,7 @@ In our callback we'll examine each character in the buffer to see if it's a newl
 
 We'll create an array to store the byte offset of each newline for the last N+1 lines. The +1 is so we can keep around an extra trailing line to start reading from.
 
-![Algorithm Explained](/path/to/img.jpg "An illustration of the algorithm in use.")
+![Algorithm Explained](https://raw.github.com/nodekc/workshop/master/labs/last4lines.png "An illustration of the algorithm in use.")
 
 ```js
 var numLines = (args[1] || 10) + 1;

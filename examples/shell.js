@@ -52,7 +52,7 @@ var commands = {
                   index = ++index % numLines;
                }
             }
-            console.log(offset);
+
             offset += data.length;
          });
 

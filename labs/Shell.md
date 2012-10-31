@@ -10,8 +10,10 @@ In this lab we'll put together a simple shell. We'll interact with the filesyste
 
 ### Objectives
 
-* Filesystem
 * The global process variable
+* Filesystem operations
+* Working with streams
+* JavaScript practice
 
 ## Lab
 Commands will be provided to our shell through the process' standard in. By default, Node does not enable standard input. So the first thing we'll do is enable standard in and echo the commands.
@@ -293,11 +295,7 @@ fileStream.on('end', function () {
 If you're new to JavaScript you may be confused by the check to see if an element is a number. This ensures ```newLineOffsets[index]``` has been set to a number. If the value was never set it would be ```undefined```. Alternatively, this could have been:
 
 ```js
-if (typeof newLineOffsets[index] !== 'undefined') {
-    var position = newLineOffsets[index] + 1;
-} else {
-    var position = 0;
-}
+typeof newLineOffsets[index] !== 'undefined'
 ```
 
 Some examples of the ```typeof``` operator:
@@ -309,7 +307,7 @@ Some examples of the ```typeof``` operator:
 
 **Important**
 
-Another important detail about this example is that the variable declaration happens within the braces of the conditional statement. In other languages ```position``` would not be available out of the scope of the conditional block. However, in JavaScript, ```position``` is available outside of the statement block because of how scoping is handled in JavaScript. In short, JavaScript scope is at the ```function``` level. If you want to read more search for *variable hoisting* on Google.
+Another important detail about this example is that the variable declaration happens within the braces of the conditional statement. In other languages ```position``` would not be available out of the scope of the conditional block. However, in JavaScript, ```position``` is available outside of the statement block because of how scoping is handled in JavaScript. In short, JavaScript scope is at the ```function``` level. If you want to read more search for *JavaScript variable hoisting* on Google.
 
 
 

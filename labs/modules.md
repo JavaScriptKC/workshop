@@ -23,11 +23,13 @@ var exports = {};
 (function() {
   var a = 10;
   exports.foo = a * 10;
-}());
+})();
 
-console.log(exports.a); // undefined
+console.log(exports.a);   // undefined
 console.log(exports.foo); // 100
 ```
+
+Notice the ```(function () {/* module code here*/} )();```. This provides a new scope for the module to prevent pollution of the global object.
 
 If written into a node module, this would be written as:
 
@@ -91,14 +93,14 @@ In the ```planets``` directory, create a file called ```planets.json``` with the
 }
 ```
 
-View the ```planets.json``` file by firing up a node shell from within the ```/planets``` directory and typing the following:
+View the ```planets.json``` file by firing up a node shell (```node``` without arguments) from within the ```/planets``` directory and typing the following:
 
 ```shell
 var planets = require('./planets.json');
 planets.neptune;
 ```
 
-Try output the radius of some other plaents.
+Try to output the radius of some other planets.
 
 Once you are comfortable with ```planets.json``` object,  update the ```earth.js``` example by importing ```planets.json``` into ```earth.js```.
 
@@ -127,7 +129,7 @@ Next write a couple tests using the [documentation for assert](http://nodejs.org
 ## requiring from the node_modules directory
 
 Modules can be installed using the node package manager, npm, to be included into your application.
-For the next example, let's print out the planets in order of size. To do this, we'll include underscore.js. First we need to install underscore by executing the following command from within the ```planets/``` directory.
+For the next example, let's print out the planets in order of size. To do this, we'll include the ```underscore.js``` module. First we need to install underscore by executing the following command from within the ```planets/``` directory.
 
 ```npm install underscore```
 

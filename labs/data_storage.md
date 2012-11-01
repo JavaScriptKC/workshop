@@ -21,7 +21,7 @@
 3. Run `npm install --save mongodb`
 4. Create a file named `config`
 
-   Inside of `connection.json` create an object with a member object called `"connection"` like the following.
+   Inside of `config.json` create an object with a member object called `"connection"` like the following.
    ```
    {
        "connection":{

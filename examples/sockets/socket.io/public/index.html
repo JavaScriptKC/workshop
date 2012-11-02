@@ -19,13 +19,13 @@
     
     <script>
       // View helpers / non-essential
-      var updateView = function(){
+      var updateView = function () {
         var list = [];
         
         for (var u in collection) {
           if (!collection.hasOwnProperty(u))
             continue;
-          list.push('<li>'+collection[u].github+' ('+collection[u].name+')</li>');
+          list.push('<li>'+collection[u].id+' ('+collection[u].name+')</li>');
         }
         
         $('#users').html(list.join(''))

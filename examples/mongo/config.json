@@ -1,0 +1,7 @@
+{
+    "connection":{
+        "dbName":"mongo-lab",
+        "host":"localhost",
+        "port":27017
+    }
+}

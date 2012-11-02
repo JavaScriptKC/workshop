@@ -27,7 +27,7 @@
     // resource create
     client.on('user.create', function (user, cb) {
       if (users[user.github]) {
-        cb("ERROR: user already exists", null);
+        cb("ERROR: user exists", null);
       } else {
         users[user.github] = user;
         cb(null, user);
@@ -37,40 +37,40 @@
     
     // resource read
     client.on('user.read', function (id, cb) {
-      if (id){
-        err = (users[id]) ? null : "ERROR: no user found with id = "+id;
-        cb(err, users[id]);
-      }
-      cb(null, users);
+      var err = null,
+          result = id ? users[id] : users;
+      if (typeof result === "undefined")
+        err = "ERROR: no user found with id = "+id;
+      cb(err, result);
     });
     
     // resource update
     client.on('user.update', function (user, cb) {
-      if (typeof users[user.github] === "undefined") {
+      if (typeof users[user.github] === "undefined" ) {
+        cb("ERROR: user not updated - user "+user.github+" does not exist", user);
+      } else {
         users[user.github] = user;
+        cb(null, user);
+        io.sockets.emit('user.updated', user);
       }
-      cb(null, user);
-      io.sockets.emit('user.updated', user);
     });
     
     // resource destroy
     client.on('user.destroy', function (id, cb) {
       if (typeof users[id] === "undefined") {
-        
+        cb("ERROR: user not destroyed - user with github = "+id+" does not exist", users[id]);
       } else {
-        
+        delete users[id];
+        cb(null, id);
+        io.sockets.emit('user.destroyed', id);
       }
-      var deletedUser = users[id];
-      delete users[id];
-      cb(null, deletedUser);
-      io.sockets.emit('user.destroyed', deletedUser);
     });
     
     // system event emitters/listeners
-    io.sockets.emit('connection.join');
-    
+    client.emit('connection.me');  // sent only to me
+    client.broadcast.emit('connection.join'); // sent to everyone except me
     client.on('disconnect', function () { 
-      io.sockets.emit('connection.drop');
+      socket.broadcast.emit('connection.drop');
     });
     
   });

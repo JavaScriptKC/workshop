@@ -1,11 +1,11 @@
-
 //================================================================= Dependencies
 
   var express = require('express'),
       io = require('socket.io'),
       http = require('http'),
       path = require('path'),
-      app, server, io, users;
+      users = require('./users.json'),
+      app, server, io;
       
 
 //================================================================ Express Setup

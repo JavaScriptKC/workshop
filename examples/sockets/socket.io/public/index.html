@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html>
+  
   <head>
     <title>NodeLabs Socket.io</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+      body { padding: 50px; font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; } 
+      a { color: #00b7ff; }
+    </style>
   </head>
+  
   <body>
     <h1>NodeLabs Socket.io Lab</h1>
-    <p>The purpose of this lab is to code simple api to a shared server resource</p>
-    <p>Open your favorite browser (*cough* chrome *cough*), open the console, and type 'users'</p>
-    <ul class="users"></ul>
+    <p>The purpose of this lab is to code simple api to a server resource that may be shared across multiple clients.</p>
+    <p>Open your favorite browser (*cough* chrome *cough*), open the console and type 'Users' into the console and click enter to view the User api.</p>
+    
+    <h3 id="count"></h3>
+    <ul id="users"></ul>
+    
+    <script>
+      // View helpers / non-essential
+      var updateView = function(){
+        var list = [];
+        
+        for (var u in collection) {
+          if (!collection.hasOwnProperty(u))
+            continue;
+          list.push('<li>'+collection[u].github+' ('+collection[u].name+')</li>');
+        }
+        
+        $('#users').html(list.join(''))
+        $('#count').html("Users ("+list.length+")");
+      }
+    </script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/libs/jquery.js"></script>
-    <script src="/javascripts/app.js"></script>
+    <script src="/jquery.js"></script>
+    <script src="/client.js"></script>
   </body>
+  
 </html>

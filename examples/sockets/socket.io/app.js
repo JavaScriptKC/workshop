@@ -1,9 +1,8 @@
 //================================================================= Dependencies
 
   var express = require('express'),
-      io = require('socket.io'),
+      sio = require('socket.io'),
       http = require('http'),
-      path = require('path'),
       users = require('./users.json'),
       app, server, io;
       
@@ -11,25 +10,23 @@
 //================================================================ Express Setup
 
   app = express();
-  app.set("port", process.env.PORT || 3000);
-  app.use(express.static( path.join(__dirname, "public") ));
-  
+  app.use(express.static( __dirname+"/public" ));
   server = http.createServer(app);
-  server.listen(app.get("port"));
+  server.listen( process.env.PORT || 3000);
 
 
-//=============================================================== Socket RPC API
+//=================================================================== Socket API
   
-  io = io.listen(server);
+  io = sio.listen(server);
   
   io.sockets.on('connection', function (client) {
     
     // resource create
     client.on('user.create', function (user, cb) {
-      if (users[user.github]) {
+      if (users[user.id]) {
         cb("ERROR: user exists", null);
       } else {
-        users[user.github] = user;
+        users[user.id] = user;
         cb(null, user);
         io.sockets.emit('user.created', user);
       }
@@ -37,19 +34,21 @@
     
     // resource read
     client.on('user.read', function (id, cb) {
-      var err = null,
-          result = id ? users[id] : users;
-      if (typeof result === "undefined")
-        err = "ERROR: no user found with id = "+id;
-      cb(err, result);
+      var result = id ? users[id] : users;
+      if (typeof result === "undefined"){
+        cb("ERROR: no user found with id = "+id)
+      } else {
+        cb(null, result);
+        client.emit('user.listed', result);
+      }
     });
     
     // resource update
     client.on('user.update', function (user, cb) {
-      if (typeof users[user.github] === "undefined" ) {
-        cb("ERROR: user not updated - user "+user.github+" does not exist", user);
+      if (typeof users[user.id] === "undefined" ) {
+        cb("ERROR: user not updated - user "+user.id+" does not exist", user);
       } else {
-        users[user.github] = user;
+        users[user.id] = user;
         cb(null, user);
         io.sockets.emit('user.updated', user);
       }
@@ -58,7 +57,7 @@
     // resource destroy
     client.on('user.destroy', function (id, cb) {
       if (typeof users[id] === "undefined") {
-        cb("ERROR: user not destroyed - user with github = "+id+" does not exist", users[id]);
+        cb("ERROR: user not destroyed - user with id = "+id+" does not exist", users[id]);
       } else {
         delete users[id];
         cb(null, id);
@@ -66,11 +65,13 @@
       }
     });
     
-    // system event emitters/listeners
-    client.emit('connection.me');  // sent only to me
-    client.broadcast.emit('connection.join'); // sent to everyone except me
+    // tell client when they've connected
+    client.emit('connection.me'); 
+    
+    // system event emitters / listeners
+    client.broadcast.emit('connection.join');
     client.on('disconnect', function () { 
-      socket.broadcast.emit('connection.drop');
+      client.broadcast.emit('connection.drop') 
     });
     
   });

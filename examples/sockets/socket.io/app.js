@@ -19,14 +19,6 @@
 
 
 //=============================================================== Socket RPC API
-  users = {
-    "joeandaverde": { name: "joseph",   github: "joeandaverde" }, 
-    "mhemesath":    { name: "mike",     github: "mhemesath" }, 
-    "dustyburwell": { name: "dusty",    github: "dustyburwell" }, 
-    "ruzz311":      { name: "russell",  github: "ruzz311" }, 
-    "joelongstreet":{ name: "joe",      github: "joelongstreet" }, 
-    "adunkman":     { name: "andrew",   github: "adunkman" }
-  };
   
   io = io.listen(server);
   

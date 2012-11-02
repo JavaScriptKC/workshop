@@ -21,7 +21,7 @@
   
   io.sockets.on('connection', function (client) {
     
-    // resource create
+    // create resource
     client.on('user.create', function (user, cb) {
       if (users[user.id]) {
         cb("ERROR: user exists", null);
@@ -32,7 +32,7 @@
       }
     });
     
-    // resource read
+    // read resource(s)
     client.on('user.read', function (id, cb) {
       var result = id ? users[id] : users;
       if (typeof result === "undefined"){
@@ -43,7 +43,7 @@
       }
     });
     
-    // resource update
+    // update resource
     client.on('user.update', function (user, cb) {
       if (typeof users[user.id] === "undefined" ) {
         cb("ERROR: user not updated - user "+user.id+" does not exist", user);
@@ -54,7 +54,7 @@
       }
     });
     
-    // resource destroy
+    // destroy resource
     client.on('user.destroy', function (id, cb) {
       if (typeof users[id] === "undefined") {
         cb("ERROR: user not destroyed - user with id = "+id+" does not exist", users[id]);
@@ -66,7 +66,7 @@
     });
     
     // tell client when they've connected
-    client.emit('connection.me'); 
+    client.emit('connection.me', client.id); 
     
     // system event emitters / listeners
     client.broadcast.emit('connection.join');

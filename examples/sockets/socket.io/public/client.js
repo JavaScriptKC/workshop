@@ -56,7 +56,7 @@ var socket = io.connect('http://localhost:3000'),
 //========================================================================= Init
   
   // Socket connection events from the server
-  socket.on('connection.me',   function () { User.read(null, updateView) });
+  socket.on('connection.me', function (id) { User.read(null, updateView) });
   socket.on('connection.join', function () { console.log("Connection.join") });
   socket.on('connection.drop', function () { console.log("Connection.drop") });
   

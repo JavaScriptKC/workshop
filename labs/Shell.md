@@ -235,7 +235,7 @@ With these properties we can create a read stream that starts at the beginning o
       flags: 'r',
       encoding: 'utf8',
       mode: 0666,
-      bufferSize: stats.blksize,
+      bufferSize: 200,
       start: 0,
       end: stats.size
     };

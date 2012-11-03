@@ -1,0 +1,35 @@
+body { 
+  background:  #46483E; 
+  color: white; 
+  font-family: verdana; 
+  width: 40em;
+  margin: 0 auto 50px;
+}
+p {
+  line-height: 1.5em;
+}
+a {
+  color: white;
+}
+pre {
+  padding: 8px;
+  background-color: #CCC;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  color: #46483E;
+  overflow: auto;
+}
+header {
+  border-bottom: 1px solid #CCC;
+}
+header h1 {
+  text-indent: -9999px;
+  background: transparent url("img/logotype.png") no-repeat left center;
+  background-size: 200px 125px;
+  height: 100px;
+}
+header a.back {
+  float: right;
+  line-height: 100px;
+  margin-right: 40px;
+}

@@ -1,0 +1,62 @@
+body { 
+  background:  #46483E; 
+  color: white; 
+  font-family: verdana;
+}
+h1 {
+  text-indent: -9999px;
+  background: transparent url("img/logotype.png") no-repeat center center;
+  background-size: 400px 300px;
+  height: 200px;
+}
+h2 { font-size: 2em; }  
+p {
+  line-height: 1.5em;
+}
+a {
+  color: white;
+}
+ul.posts-list {
+  width: 40em;
+  margin: 0 auto;
+  background-color: #CCC;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  color: #46483E;
+  padding: 0;
+}
+.posts-list li {
+  list-style: none;
+  margin: 0;
+}
+.posts-list li a {
+  color: #46483E;
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+  border-bottom: 1px solid #DDD;
+}
+.posts-list li a:hover {
+  color: rgb(139, 199, 74);
+  background-color: #EEE;
+
+  -moz-transition: none .25s ease-out;
+  -webkit-transition: none .25s ease-out;
+  -o-transition: none .25s ease-out;
+  transition: none .25s ease-out;
+
+  -moz-transition-property: color;
+  -moz-transition-property: background-color;
+  -webkit-transition-property: color;
+  -webkit-transition-property: background-color;
+  -o-transition-property: color;
+  -o-transition-property: background-color;
+  transition-property: color;
+  transition-property: background-color;
+}
+.posts-list li a:hover {
+  background-image: url('img/arrow-simple.png');
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 32px 32px;
+}

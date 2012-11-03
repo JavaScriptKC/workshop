@@ -191,7 +191,7 @@ var server = http.createServer(function (req, res) {
 
     fs.readFile('index.html', function (err, data) {
         if (!err) {
-            res.write(templateEngine(data, {})); // use our template engine here
+            res.write(templateEngine(data.toString(), {})); // use our template engine here
             res.end();
         } 
     });

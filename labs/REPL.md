@@ -20,7 +20,7 @@ In this lab you'll learn how to use the Node REPL to execute ad-hoc JavaScript s
 
 ## Starting the Node REPL
 
-To launch the Node REPL open a command prompt or terminal and execute ```node```. Once open, evaluate a few simple expressions
+To launch the Node REPL open a command prompt or terminal and execute ```node```. Once open, evaluate a few simple expressions:
 
 ```JavaScript
 > 1 + 5
@@ -31,24 +31,24 @@ undefined
 6
 ```
 
-Notice the result of the statement executed is printed on the following line without ```>```. 
+Notice the result of the statement executed is printed on the following line without ```>```. If you made a typo you can cancel your statement by pressing ```CTRL+C``` once.
 
-If you forgot to assign the value of the previously executed statement, the Node REPL provides a useful syntax to access the previous result.
+If you forgot to assign the value of the previously executed statement, the Node REPL provides a useful syntax to access the previous result through ```_```.
 
 ```JavaScript
 > "Node Rocks!"
-"Node Rocks!"
+'Node Rocks!'
 > _
-"Node Rocks!"
+'Node Rocks!'
 > var lastResult = _
 undefined
 > lastResult
-"Node Rocks!"
+'Node Rocks!'
 ```
 
 ## Arrays
 
-There are a few different ways to create arrays in JavaScript. First, you can use the array syntax, for example ```[1,3,3,7]```. This will create an array with four elements. A major difference between arrays in JavaScript and many other languages is that they are mutable and the size is not required to create. Another way of creating an array is with the ```Array``` constructor. 
+There are a few different ways to create arrays in JavaScript. First, you can use the array syntax, for example ```[1,3,3,7]```. This will create an array with four elements. A major difference between arrays in JavaScript and many other languages is that they are mutable and the size is not required upon creation. Another way of creating an array is with the ```Array``` constructor. 
     
   * The array Initializer:
 
@@ -71,7 +71,7 @@ Adding an item to an array:
 
 ```JavaScript
 > var a =  ['apple', 'banana', 'kiwi']
-['apple', 'banana', 'kiwi']
+undefined
 > a.length
 3
 > a.push("lemon")
@@ -80,11 +80,20 @@ Adding an item to an array:
 5 //unshift adds an element to the beginning of the array and returns the new length
 ```
 
-Removing an item from an array: 
+Now inspect the contents of your array simply by typing the name of the variable and pressing enter.
 
 ```JavaScript
 > a
-['lime', 'apple', 'banana', 'kiwi', 'lemon']
+[ 'lime',
+  'apple',
+  'banana',
+  'kiwi',
+  'lemon' ]
+```
+
+Removing an item from an array: 
+
+```JavaScript
 > a.pop()
 'lemon' //pop removes and returns the last value in the array.
 > a.shift()
@@ -121,7 +130,9 @@ undefined
 3
 ```
 
-Properties using the array syntax:
+Properties using the array syntax.
+
+This syntax allows for you to create properties on objects that would otherwise be impossible to access using the dot syntax above.
 
 ```JavaScript
 > o['foo']
@@ -148,18 +159,23 @@ Objects can be composed of other objects:
 
 ## Functions
 
-JavaScript functions are declared using the ```function``` keyword. 
+JavaScript functions are declared using the ```function``` keyword. This will create a function called Foo that does nothing: 
 
 ```JavaScript
-var Foo = function () { }
+> function Foo () {}
+undefined
+> Foo
+[Function: Foo]
+
+> var Bar = function () {}
+undefined
+> Bar
+[Function]
 ```
 
-Functions that do not have a name are *Anonymous Functions*. These are commonly used as callback arguments to other functions.
+Functions that do not have a name are *Anonymous Functions*. For example, ```function () { }``` is considered anonymous. These are commonly used as callback arguments to other functions.
 
 ```JavaScript
-//Anonymous function declaration
-function () { }
-
 //Declare a function that takes a callback argument
 var Foo = function (callback) {
     //Foo function body
@@ -177,6 +193,7 @@ Foo(function () {
 The Node REPL allows for multi-line statements to be executed. When a line cannot be processed as a complete JavaScript statement the Node REPL prompts for more input (this example starts a functional closure but does not terminate it with a closing bracket):
 
 ```
+// Notice the missing right bracket.
 > var boo = function () {
 ... 
 ```

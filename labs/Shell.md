@@ -142,6 +142,8 @@ stdin.on('data', function (input) {
 To implement ls add a new property to our object named 'ls' like this:
 
 ```js
+var fs = require('fs');
+
 var commands = {
     'pwd': function () {
         console.log(process.cwd());

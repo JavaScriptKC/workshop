@@ -81,7 +81,7 @@ tags:
 7. Now lets create our connection to `mongo`   
 
         mongoDomain.run(function () {
-            var db = new Db(CONFIG.dbName, new Server(CONFIG.host, CONFIG.port, {safe:true}));
+            var db = new Db(CONFIG.dbName, new Server(CONFIG.host, CONFIG.port), {safe:true});
         });
 
     **Note** At this point we are not connnected to the server.

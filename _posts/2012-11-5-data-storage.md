@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "5. Data Storage Tutorial"
+title: "5. Data Storage Lab"
 author: NodeKC
 tags:
 ---

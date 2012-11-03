@@ -68,6 +68,7 @@ tags:
 
     A domain allows to handle all IO operations as a single group. In this case we want all of our mongo actions to happen in the `mongoDomain` allowing us to catch all errors in a single place. To read more about domains go [here](http://nodejs.org/api/domain.html).
 
+        var domain = require('domain');
         var mongoDomain = domain.create(),
             intercept = mongoDomain.intercept.bind(mongoDomain);
 
@@ -88,7 +89,7 @@ tags:
 
 8. Lets insert some data into `mongo`.
 
-    We are going to be inserting a list of users into this database. The data can be found [here](https://github.com/nodekc/workshop/blob/master/examples/mongo/assets/users.json)
+    We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json))
 
 
     To insert into mongo we need to get a collection, so lets create a function that will automatcially intercept the callback and retrieves the collection.

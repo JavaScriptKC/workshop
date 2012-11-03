@@ -55,7 +55,7 @@ The next step is to parse the input string. The commands in our simple shell wil
 
 ```js
 stdin.on('data', function (input) {
-    var matches = input.toString().match(/(\w+)(.*/)/);
+    var matches = input.toString().match(/(\w+)(.*)/);
     var command = matches[1].toLowerCase();
     var args = matches[2].trim().split(/\s+/);
 });
@@ -78,7 +78,7 @@ var commands = {
 };
 
 stdin.on('data', function (input) {
-    var matches = input.toString().match(/(\w+)(.*/)/);
+    var matches = input.toString().match(/(\w+)(.*)/);
     var command = matches[1].toLowerCase();
 
     commands[command]();
@@ -131,7 +131,7 @@ For example: ```'some__string'.split('_')``` would result in ```['some', '', 'st
 
 ```js
 stdin.on('data', function (input) {
-    var matches = input.toString().match(/(\w+)(.*/)/);
+    var matches = input.toString().match(/(\w+)(.*)/);
     var command = matches[1].toLowerCase();
     var args = matches[2].trim().split(/\s+/); // split on white space
 

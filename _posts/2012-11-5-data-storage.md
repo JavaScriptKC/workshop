@@ -88,7 +88,7 @@ tags:
 
 8. Lets insert some data into `mongo`.
 
-    We are going to be inserting a list of users into this database. The data can be found [here](../examples/mongo/assets/users.json)
+    We are going to be inserting a list of users into this database. The data can be found [here](https://github.com/nodekc/workshop/blob/master/examples/mongo/assets/users.json)
 
 
     To insert into mongo we need to get a collection, so lets create a function that will automatcially intercept the callback and retrieves the collection.

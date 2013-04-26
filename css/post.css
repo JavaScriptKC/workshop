@@ -1,7 +1,7 @@
-body { 
-  background:  #46483E; 
-  color: white; 
-  font-family: verdana; 
+body {
+  background:  #46483E;
+  color: white;
+  font-family: verdana;
   width: 40em;
   margin: 0 auto 50px;
 }
@@ -13,11 +13,10 @@ a {
 }
 pre {
   padding: 8px;
-  background-color: #CCC;
-  border: 1px solid #DDD;
+  border: 2px solid #555;
   border-radius: 3px;
-  color: #46483E;
   overflow: auto;
+  background-color: #3e4037;
 }
 header {
   border-bottom: 1px solid #CCC;

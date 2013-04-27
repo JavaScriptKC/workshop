@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Node Labs</title>
+    <title>{{ page.title }} - Node Labs</title>
     <link href="/css/post.css" rel="stylesheet" type="text/css"/>
     <link href="/css/pygments.css" rel="stylesheet" type="text/css"/>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Sans+Mono' rel='stylesheet' type='text/css' />
+
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
@@ -18,14 +20,21 @@
 
     </script>
   </head>
-  <body id="top">
-    <header>
-      <a href="/" class="back">Back to index</a>
-      <a href="/"><h1>Node Labs</h1></a>
-    </header>
+  <body>
+
+    <div id="header">
+      <a href="/" title="Take me home!"><img src="/css/img/logotype_dark.png" /></a>
+    </div>
 
     {{ content }}
 
-    <a href="#top">Back to top</a>
+    {% if page.next %}
+      <div id="next">
+        <a href="{{ page.next.url }}">
+          Keep it up! Continue on to the next lab.
+          <span>{{ page.next.title }}</span>
+        </a>
+      </div>
+    {% endif %}
   </body>
 </html>

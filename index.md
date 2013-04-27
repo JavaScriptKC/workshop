@@ -16,6 +16,15 @@ $ npm --version
 1.2.18
 {% endhighlight %}
 
-<div id="next" class="disabled">
-  Please await further instruction.
+<div id="next">
+  <div class="stop">
+    Please await further instruction.
+  </div>
+  <div class="userprompt">
+    <a href="#">Let's get started!</a>
+  </div>
+  <div class="continue">
+    <!-- Please don't just skip through these, actually do the labs! -->
+    <a href="{{ site.posts.last.url }}">Awesome, let's get started!<span>{{ site.posts.last.title }}</span></a>
+  </div>
 </div>

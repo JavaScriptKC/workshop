@@ -26,17 +26,18 @@
 
       $("#next .stop").hide();
       $("#next .userprompt").show();
-      $("#next .userprompt a").click(function (e) {
-        e.preventDefault();
-
-        var username = prompt("What's your twitter username?");
-        $.cookie("username", username);
-
-        $("#next .stop").show();
-        $("#next .userprompt").hide();
-        socket.emit("username", whoami());
-      });
     }
+  };
+
+  var promptForUsername = function (e) {
+    e.preventDefault();
+
+    var username = prompt("Pick a username!");
+    $.cookie("username", username);
+
+    $("#next .stop").show();
+    $("#next .userprompt").hide();
+    socket.emit("username", whoami());
   };
 
   var saveToCache = function (key, data) {
@@ -51,33 +52,35 @@
     var thisPage = window.location.pathname;
     var settings = loadFromCache("settings");
     var user = loadFromCache("user");
-    var nextPage;
+    var canContinue = false;
 
     if (!$.cookie("username")) return;
 
     if (thisPage == "/" || thisPage == "index.html") {
-      nextPage = settings.allowFirstLab ? {
-        url: "/repl.html",
-        title: "1. REPL Lab"
-      } : null;
+      canContinue = settings.allowFirstLab;
+    }
+    else {
+      canContinue = user.completed && user.completed[thisPage];
     }
 
-    if (nextPage) {
-      var text;
+    var stop = $("#next .stop");
+    var next = $("#next .continue");
 
-      if (thisPage == "/") text = "And we&rsquo;re off! Start on the first lab.";
-      else text = "Keep it up! Continue on to the next lab.";
-
-      var container = $("#next");
-
-      container.removeClass("disabled").html("<a>" + text + "<span></span></a>");
-      $("a", container).attr("href", nextPage.url);
-      $("span", container).text(nextPage.title);
+    if (canContinue) {
+      stop.hide();
+      next.show();
+    }
+    else {
+      stop.show();
+      next.hide();
     }
   };
 
   $(document).ready(function () {
     socket.emit("username", whoami());
+
+    $("#next .userprompt a").click(promptForUsername);
+
     updateUI();
   });
 

@@ -1,7 +1,11 @@
 (function () {
 
-  var socket = io.connect('http://nodelabs.herokuapp.com:80');
-  //var socket = io.connect('http://localhost:4040');
+  //var socket = io.connect('http://nodelabs.herokuapp.com:80');
+  var socket = io.connect('http://localhost:4040');
+
+  socket.on("connect", function () {
+    socket.emit("username", whoami());
+  });
 
   socket.on("user", function (user) {
     saveToCache("user", user);
@@ -76,10 +80,18 @@
     }
   };
 
-  $(document).ready(function () {
-    socket.emit("username", whoami());
+  var unlockNextLab = function (e) {
+    e.preventDefault();
 
+    var thisPage = window.location.pathname;
+    var url = "http://nodelabs.herokuapp.com/" + encodeURIComponent($.cookie("username")) + thisPage;
+    
+    $.ajax(url, { dataType: "jsonp" });
+  };
+
+  $(document).ready(function () {
     $("#next .userprompt a").click(promptForUsername);
+    $("a.unlock").click(unlockNextLab);
 
     updateUI();
   });

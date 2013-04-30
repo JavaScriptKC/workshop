@@ -89,9 +89,19 @@
     $.ajax(url, { dataType: "jsonp" });
   };
 
+  var injectYourUsername = function (index, element) {
+    var html = $(element).html();
+    var replaced = html.replace(/your-username/g, $.cookie("username"));
+
+    if (html != replaced) {
+      $(element).html(replaced);
+    }
+  };
+
   $(document).ready(function () {
     $("#next .userprompt a").click(promptForUsername);
     $("a.unlock").click(unlockNextLab);
+    $("code").each(injectYourUsername);
 
     updateUI();
   });

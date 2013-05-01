@@ -33,23 +33,15 @@ Inside of `config.json` create an object with a member object called `"connectio
 
 5. Create a file named `index.js`
 
-First add `"use strict"` to the top of the file to prevent us from doing anything crazy like exporting a global variable!
-
-{% highlight javascript %}
-"use strict";
-{% endhighlight %}
-
 Next require your `config.json` so we can get our connection information.
 
 {% highlight javascript %}
-"use strict"
 var CONFIG = require("./config.json").connection;
 {% endhighlight %}
 
 Next we'll get our mongo Classes
 
 {% highlight javascript %}
-"use strict"
 var CONFIG = require("./config.json").connection,
   mongodb = require('mongodb'),
   Db = mongodb.Db,

@@ -7,7 +7,7 @@ tags:
 
 # Storing Some Data
 
-Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab.
+Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab. This lab will also introduce the advanced concept of domains for error handling.
 
 ## Starting the project
 

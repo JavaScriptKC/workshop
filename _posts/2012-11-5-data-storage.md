@@ -15,6 +15,8 @@ Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-
 
 This is the proper way to start all Node.js projects. If you're using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary files to develop and run your project.
 
+## Connect to MongoDB
+
 Inside of `config.json` create an object with a member object called `"connection"` like the following.
    
 {% highlight javascript %}

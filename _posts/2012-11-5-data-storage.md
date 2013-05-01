@@ -7,7 +7,7 @@ tags:
 
 # Storing Some Data
 
-Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab. This lab will also introduce the advanced concept of domains for error handling.
+Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab.
 
 ## Starting the project
 
@@ -70,11 +70,9 @@ var mongodb = require('mongodb'),
 var CONFIG  = require("./config.json").connection;
 {% endhighlight %}
 
-## Tangent into domains!
-6. Create a domain to catch errors from our mongo code.
+<!--## Tangent into domains!
 
-
-A domain allows to handle all IO operations as a single group. In this case we want all of our mongo actions to happen in the `mongoDomain` allowing us to catch all errors in a single place. To read more about domains go [here](http://nodejs.org/api/domain.html).
+A domain allows us to handle all I/O operations as a single group. In this case we want all of our mongo actions to happen in the `mongoDomain` allowing us to catch all errors in a single place. To read more about domains go [here](http://nodejs.org/api/domain.html).
 
 {% highlight javascript %}
 var domain = require('domain');
@@ -86,7 +84,7 @@ mongoDomain.on('error', function (er) {
 });
 {% endhighlight %}
 
-Notice how we create a new variable [`intercept`](http://nodejs.org/api/domain.html#domain_domain_intercept_callback) to which is bound to the `mongoDomain` scope. This allows us to reference `intercept` without having to type `mongoDomain.intercept` everytime.
+Notice how we create a new variable [`intercept`](http://nodejs.org/api/domain.html#domain_domain_intercept_callback) to which is bound to the `mongoDomain` scope. This allows us to reference `intercept` without having to type `mongoDomain.intercept` everytime.-->
 
 7. Now lets create our connection to `mongo`
 

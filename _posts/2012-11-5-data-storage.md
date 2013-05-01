@@ -261,7 +261,7 @@ When this is executed we should see something like this:
 User count is 1234
 {% endhighlight %}
 
-## More advanced Mongo interactions
+<!--## More advanced Mongo interactions
 
 13. Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use the [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce).
 
@@ -341,7 +341,7 @@ got counts by first name!
     "value": 2
   }
 ]
-{% endhighlight %}
+{% endhighlight %}-->
 
 See if you can implement your own `findById`, and `update` function, using what we have already built and these [docs](http://mongodb.github.com/node-mongodb-native/).
 

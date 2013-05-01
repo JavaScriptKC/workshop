@@ -15,10 +15,39 @@ Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-
 
 This is the proper way to start all Node.js projects. If you're using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary files to develop and run your project.
 
-## Connect to MongoDB
+After all of that `package.json` should look sorta like this
 
-Inside of `config.json` create an object with a member object called `"connection"` like the following.
-   
+{% highlight javascript %}
+{
+  "name": "mongo-lab",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "mongodb": "~1.3.0"
+  }
+}
+{% endhighlight %}
+
+## Get everything in place
+
+Create a file named `index.js`. This will be where we do all of the fun stuff. Inside `index.js` go ahead and `require()` the `mongodb` module we installed earlier.
+
+{% highlight javascript %}
+var mongodb = require('mongodb'),
+    Db      = mongodb.Db,
+    Server  = mongodb.Server;
+{% endhighlight %}
+
+We went ahead and assigned the Db and Server variables to the respective `mongodb` exports, too.
+* Server: Represents the mongodb server
+* Db:     Represents a database on ther server
+
+Next, let's add a file called `config.json`. Inside of `config.json` create an object with a member object called `"connection"` like the following.
+
 {% highlight javascript %}
 {
   "connection":{
@@ -31,26 +60,17 @@ Inside of `config.json` create an object with a member object called `"connectio
 
 **Note** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.  
 
-5. Create a file named `index.js`
-
-Next require your `config.json` so we can get our connection information.
+Next require `config.json` so we can get our connection information.
 
 {% highlight javascript %}
-var CONFIG = require("./config.json").connection;
+var mongodb = require('mongodb'),
+    Db      = mongodb.Db,
+    Server  = mongodb.Server;
+
+var CONFIG  = require("./config.json").connection;
 {% endhighlight %}
 
-Next we'll get our mongo Classes
-
-{% highlight javascript %}
-var CONFIG = require("./config.json").connection,
-  mongodb = require('mongodb'),
-  Db = mongodb.Db,
-  Server = mongodb.Server;
-{% endhighlight %}
-
-* `Server` : This class represents the mongodb server 
-* `Db` : This is the class that represents a database on the mongodb `Server`
-
+## Tangent into domains!
 6. Create a domain to catch errors from our mongo code.
 
 

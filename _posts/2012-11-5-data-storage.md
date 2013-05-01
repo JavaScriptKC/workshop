@@ -99,7 +99,7 @@ var db     = new Db(CONFIG.dbName, server, {safe:true});
 
 ## Insert some data
 
-We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json)). Download that file and save it to `./data`.
+We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json). Download that file and save it to `./data`.
 
 Let's create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `users`.
 
@@ -111,7 +111,7 @@ function insert(callback) {
   var users = require("./data/users.json");
 
   //get the "users collection"
-  db.collection("users", function (collection) {
+  db.collection("users", function (err, collection) {
 
     //insert the users
     collection.insert(users, callback);
@@ -132,6 +132,9 @@ db.open(function () {
 
     //we inserted our users!
     console.log("Inserted Users!");
+
+    // close the connection since we're done with it
+    db.close();
   });
 }));
 {% endhighlight %}
@@ -144,85 +147,121 @@ Inserted Users!
 
 And the `users` collection should be populated with our seed data.
 
-## Remove some data
+## Interact with the data
 
 {% highlight javascript %}
-...
+... // insert function is up here
 
-function remove(cb) {
-  getCollection("users", function (collection) {
-    //use intercept to allow us to catch errors
-    collection.remove(intercept(cb));
+function remove(callback) {
+  db.collection("users", function (err, collection) {
+    collection.remove(callback);
   });
 }
+
+... // db.open is down here
 {% endhighlight %}
 
-
-10. Lets combine our insert and remove to create a `reset` function so we can keep playing with the data.
+Let's also combine our insert and remove to create a `reset` function so we can keep messing with the data.
 
 {% highlight javascript %}
-function reset(cb) {
+... // remove function up here
+
+function reset(callback) {
   remove(function () {
-    insert(cb);
+    insert(callback);
   });
 }
+
+... // db.open down here
 {% endhighlight %}
 
-11. Ok lets add a method to `count` the number of users in `mongo`.
+Ok, now let's add a method to `count` the number of users in mongo.
 
 {% highlight javascript %}
-function getCount(cb) {
-  getCollection("users", function (collection) {
-    collection.count(intercept(cb));
+... // reset goes up here
+
+function count(callback) {
+  db.collection("users", function (err, collection) {
+    collection.count(callback);
   });
 }
+
+... // and db.open here
 {% endhighlight %}
 
-12. And all together now!
+And now we'll replace the original call to db.open with this so when we run the program it'll reset the data and invoke the count method.
 
 {% highlight javascript %}
-mongoDomain.run(function () {
-  var db = new Db(CONFIG.dbName, new Server(CONFIG.host, CONFIG.port, {safe:true}));
+... // interaction functions up here
 
-
-  function getCollection(collection, cb) {
-    db.collection(collection, intercept(cb));
-  }
-
-  function reset(cb) {
-    remove(function () {
-      insert(cb);
+db.open(function () {
+  reset(function () {
+    getCount(function (err, count) {
+      console.log("User count is %d", count);
+      db.close();
     });
-  }
+  });
+});
+{% endhighlight%}
 
-  function insert(cb) {
-    var users = require("./assets/users.json");
-    getCollection("users", function (collection) {
-      collection.insert(users, intercept(cb));
-    });
-  }
+And at the end of the day, this is what everything should look like:
 
-  function remove(cb) {
-    getCollection("users", function (collection) {
-      collection.remove(intercept(cb));
-    });
-  }
+{% highlight javascript %}
+var mongodb = require('mongodb'),
+    Db      = mongodb.Db,
+    Server  = mongodb.Server;
+var CONFIG  = require("./config.json").connection;
 
-  function getCount(cb) {
-    getCollection("users", function (collection) {
-      collection.count(intercept(cb));
-    });
-  }
+var server = new Server(CONFIG.host, CONFIG.port);
+var db     = new Db(CONFIG.dbName, server, {safe:true});
 
-  db.open(intercept(function () {
-    reset(function () {
-      getCount(function (count) {
-        console.log("User count is %d", count);
-      });
+function insert(callback) {
+  //get our users data
+  var users = require("./data/users.json");
+
+  //get the "users collection"
+  db.collection("users", function (err, collection) {
+
+    //insert the users
+    collection.insert(users, callback);
+  });
+}
+
+function remove(callback) {
+  db.collection("users", function (err, collection) {
+    collection.remove(callback);
+  });
+}
+
+function reset(callback) {
+  remove(function () {
+    insert(callback);
+  });
+}
+
+function count(callback) {
+  db.collection("users", function (err, collection) {
+    collection.count(callback);
+  });
+}
+
+db.open(function () {
+  reset(function () {
+    getCount(function (err, count) {
+      console.log("User count is %d", count);
+      db.close();
     });
-  }));
+  });
 });
 {% endhighlight %}
+
+When this is executed we should see something like this:
+
+{% highlight bash %}
+User count is 1234
+{% endhighlight %}
+
+## More advanced Mongo interactions
 
 13. Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use the [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce).
 
@@ -304,6 +343,6 @@ got counts by first name!
 ]
 {% endhighlight %}
 
-14. See if you can implement your own `findById`, and `update` function, using what we have already built and these [docs](http://mongodb.github.com/node-mongodb-native/).
+See if you can implement your own `findById`, and `update` function, using what we have already built and these [docs](http://mongodb.github.com/node-mongodb-native/).
 
 Once you've gotten through the lab, raise your hand and have an instructor unlock the next lab where you can play with IRC.

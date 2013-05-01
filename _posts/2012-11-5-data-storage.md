@@ -9,6 +9,12 @@ tags:
 
 Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab.
 
+* [Starting the project](#starting_the_project)
+* [Get everything in place](#get_everything_in_place)
+* [Connect to Mongo](#connect_to_mongo)
+* [Insert some data](#insert_some_data)
+* [Interact with the data](#interact_with_the_data)
+
 ## Starting the project
 
 Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-lab` directory run `npm init` and feel free to skip through all the questions with the defaults. This will create a new `package.json` file for the project. `package.json` tells a reader about your project and defines dependencies your project has on other modules. Next, run `npm install --save mongodb`. This will download the `mongodb` module and save it to the `package.json` file we just created.
@@ -94,8 +100,6 @@ Notice how we create a new variable [`intercept`](http://nodejs.org/api/domain.h
 var server = new Server(CONFIG.host, CONFIG.port);
 var db     = new Db(CONFIG.dbName, server, {safe:true});
 {% endhighlight %}
-
-**Note** At this point we are not connnected to the server.
 
 ## Insert some data
 

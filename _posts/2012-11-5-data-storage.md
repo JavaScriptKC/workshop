@@ -7,14 +7,13 @@ tags:
 
 # Storing Some Data
 
-Most applications just aren't useful without storing some data. Let's use mongodb to save and retrieve some stuff.
+Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab.
 
-## Lab
+## Starting the project
 
-1. Create a new empty directory called `mongo-lab`
-2. Run `npm init`, you can skip each question.
-3. Run `npm install --save mongodb`
-4. Create a file named `config`
+Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-lab` directory run `npm init` and feel free to skip through all the questions with the defaults. This will create a new `package.json` file for the project. `package.json` tells a reader about your project and defines dependencies your project has on other modules. Next, run `npm install --save mongodb`. This will download the `mongodb` module and save it to the `package.json` file we just created.
+
+This is the proper way to start all Node.js projects. If you're using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary files to develop and run your project.
 
 Inside of `config.json` create an object with a member object called `"connection"` like the following.
    

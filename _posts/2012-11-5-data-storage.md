@@ -1,25 +1,13 @@
 ---
 layout: post
-title: "5. Data Storage Lab"
+title: "Storing Some Data"
 author: NodeKC
 tags:
 ---
 
-# Data Storage
+# Storing Some Data
 
-## Overview
-
-### Time 
-
-30 minutes
-
-### Objectives
-
-- How to connect to mongo db.
-- How to store data to mongo.
-- How to retrieve data from mongo.
-- How to run other actions.
-    *     Map Reduce
+Most applications just aren't useful without storing some data. Let's use mongodb to save and retrieve some stuff.
 
 ## Lab
 

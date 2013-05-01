@@ -86,61 +86,69 @@ mongoDomain.on('error', function (er) {
 
 Notice how we create a new variable [`intercept`](http://nodejs.org/api/domain.html#domain_domain_intercept_callback) to which is bound to the `mongoDomain` scope. This allows us to reference `intercept` without having to type `mongoDomain.intercept` everytime.-->
 
-7. Now lets create our connection to `mongo`
+## Connect to Mongo
 
 {% highlight javascript %}
-mongoDomain.run(function () {
-  var db = new Db(CONFIG.dbName, new Server(CONFIG.host, CONFIG.port), {safe:true});
-});
+...
+
+var server = new Server(CONFIG.host, CONFIG.port);
+var db     = new Db(CONFIG.dbName, server, {safe:true});
 {% endhighlight %}
 
 **Note** At this point we are not connnected to the server.
 
+## Insert some data
 
-8. Lets insert some data into `mongo`.
+We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json)). Download that file and save it to `./data`.
 
-We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json))
-
-To insert into mongo we need to get a collection, so lets create a function that will automatcially intercept the callback and retrieves the collection.
-
-{% highlight javascript %}
-function getCollection(collection, cb) {
-  //use intercept to allow us to catch errors
-  db.collection(collection, intercept(cb));
-}
-{% endhighlight %}
-
-Next lets use `getCollection` in our `insert` function.
+Let's create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `users`.
 
 {% highlight javascript %}
-function insert(cb) {
+...
+
+function insert(callback) {
   //get our users data
-  var users = require("./assets/users.json");
+  var users = require("./data/users.json");
+
   //get the "users collection"
-  getCollection("users", function (collection) {
+  db.collection("users", function (collection) {
+
     //insert the users
-    //use intercept to allow us to catch errors
-    collection.insert(users, intercept(cb));
+    collection.insert(users, callback);
   });
 }
 {% endhighlight %}
 
-Lets insert the data
+Now execute the `insert` function
 
 {% highlight javascript %}
-//be sure to open your connection
-db.open(intercept(function () {
+...
+
+//be sure to open the connection to the database
+db.open(function () {
+
   //insert our data
   insert(function () {
+
     //we inserted our users!
     console.log("Inserted Users!");
   });
 }));
 {% endhighlight %}
 
-9. Ok now that we can insert data we should be able to remove the data too.
+If you run this now, you should see the following output:
+
+{% highlight bash %}
+Inserted Users!
+{% endhighlight%}
+
+And the `users` collection should be populated with our seed data.
+
+## Remove some data
 
 {% highlight javascript %}
+...
+
 function remove(cb) {
   getCollection("users", function (collection) {
     //use intercept to allow us to catch errors

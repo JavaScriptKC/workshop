@@ -21,7 +21,7 @@ Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-
 
 This is the proper way to start all Node.js projects. If you're using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary files to develop and run your project.
 
-After all of that `package.json` should look sorta like this
+After all of that `package.json` should look sorta like this:
 
 {% highlight javascript %}
 {
@@ -43,9 +43,9 @@ After all of that `package.json` should look sorta like this
 Create a file named `index.js`. This will be where we do all of the fun stuff. Inside `index.js` go ahead and `require()` the `mongodb` module we installed earlier.
 
 {% highlight javascript %}
-var mongodb = require('mongodb'),
-    Db      = mongodb.Db,
-    Server  = mongodb.Server;
+var mongodb = require('mongodb');
+var Db      = mongodb.Db;
+var Server  = mongodb.Server;
 {% endhighlight %}
 
 We went ahead and assigned the Db and Server variables to the respective `mongodb` exports, too.
@@ -56,49 +56,33 @@ Next, let's add a file called `config.json`. Inside of `config.json` create an o
 
 {% highlight javascript %}
 {
-  "connection":{
-    "dbName":"mongo-lab",
-    "host":"localhost",
-    "port":27017
+  "connection": {
+    "dbName": "mongo-lab",
+    "host": "localhost",
+    "port": 27017
   }
 }
 {% endhighlight %}
 
-**Note** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.  
+**Note:** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.  
 
 Next require `config.json` so we can get our connection information.
 
 {% highlight javascript %}
-var mongodb = require('mongodb'),
-    Db      = mongodb.Db,
-    Server  = mongodb.Server;
+var mongodb = require('mongodb');
+var Db      = mongodb.Db;
+var Server  = mongodb.Server;
 
-var CONFIG  = require("./config.json").connection;
+var config  = require("./config.json").connection;
 {% endhighlight %}
-
-<!--## Tangent into domains!
-
-A domain allows us to handle all I/O operations as a single group. In this case we want all of our mongo actions to happen in the `mongoDomain` allowing us to catch all errors in a single place. To read more about domains go [here](http://nodejs.org/api/domain.html).
-
-{% highlight javascript %}
-var domain = require('domain');
-var mongoDomain = domain.create(),
-    intercept = mongoDomain.intercept.bind(mongoDomain);
-
-mongoDomain.on('error', function (er) {
-  console.error('Mongo error!', er);
-});
-{% endhighlight %}
-
-Notice how we create a new variable [`intercept`](http://nodejs.org/api/domain.html#domain_domain_intercept_callback) to which is bound to the `mongoDomain` scope. This allows us to reference `intercept` without having to type `mongoDomain.intercept` everytime.-->
 
 ## Connect to Mongo
 
 {% highlight javascript %}
 ...
 
-var server = new Server(CONFIG.host, CONFIG.port);
-var db     = new Db(CONFIG.dbName, server, {safe:true});
+var server = new Server(config.host, config.port);
+var db     = new Db(config.dbName, server, {safe:true});
 {% endhighlight %}
 
 ## Insert some data
@@ -111,13 +95,13 @@ Let's create an `insert` function that will pull the data from the users file an
 ...
 
 function insert(callback) {
-  //get our users data
+  // get our users data
   var users = require("./data/users.json");
 
-  //get the "users collection"
+  // get the "users collection"
   db.collection("users", function (err, collection) {
 
-    //insert the users
+    // insert the users
     collection.insert(users, callback);
   });
 }
@@ -128,13 +112,13 @@ Now execute the `insert` function
 {% highlight javascript %}
 ...
 
-//be sure to open the connection to the database
+// be sure to open the connection to the database
 db.open(function () {
 
-  //insert our data
+  // insert our data
   insert(function () {
 
-    //we inserted our users!
+    // we inserted our users!
     console.log("Inserted Users!");
 
     // close the connection since we're done with it
@@ -156,11 +140,11 @@ And the `users` collection should be populated with our seed data.
 {% highlight javascript %}
 ... // insert function is up here
 
-function remove(callback) {
+var remove = function (callback) {
   db.collection("users", function (err, collection) {
     collection.remove(callback);
   });
-}
+};
 
 ... // db.open is down here
 {% endhighlight %}
@@ -170,25 +154,25 @@ Let's also combine our insert and remove to create a `reset` function so we can 
 {% highlight javascript %}
 ... // remove function up here
 
-function reset(callback) {
+var reset = function (callback) {
   remove(function () {
     insert(callback);
   });
-}
+};
 
 ... // db.open down here
 {% endhighlight %}
 
-Ok, now let's add a method to `count` the number of users in mongo.
+Okay, now let's add a method to `count` the number of users in mongo.
 
 {% highlight javascript %}
 ... // reset goes up here
 
-function count(callback) {
+var count = function (callback) {
   db.collection("users", function (err, collection) {
     collection.count(callback);
   });
-}
+};
 
 ... // and db.open here
 {% endhighlight %}
@@ -206,48 +190,48 @@ db.open(function () {
     });
   });
 });
-{% endhighlight%}
+{% endhighlight %}
 
 And at the end of the day, this is what everything should look like:
 
 {% highlight javascript %}
-var mongodb = require('mongodb'),
-    Db      = mongodb.Db,
-    Server  = mongodb.Server;
-var CONFIG  = require("./config.json").connection;
+var mongodb = require('mongodb');
+var Db      = mongodb.Db;
+var Server  = mongodb.Server;
+var config  = require("./config.json").connection;
 
-var server = new Server(CONFIG.host, CONFIG.port);
-var db     = new Db(CONFIG.dbName, server, {safe:true});
+var server = new Server(config.host, config.port);
+var db     = new Db(config.dbName, server, {safe:true});
 
-function insert(callback) {
-  //get our users data
+var insert = function (callback) {
+  // get our users data
   var users = require("./data/users.json");
 
-  //get the "users collection"
+  // get the "users collection"
   db.collection("users", function (err, collection) {
 
-    //insert the users
+    // insert the users
     collection.insert(users, callback);
   });
-}
+};
 
-function remove(callback) {
+var remove = function (callback) {
   db.collection("users", function (err, collection) {
     collection.remove(callback);
   });
-}
+};
 
-function reset(callback) {
+var reset = function (callback) {
   remove(function () {
     insert(callback);
   });
-}
+};
 
-function count(callback) {
+var count = function (callback) {
   db.collection("users", function (err, collection) {
     collection.count(callback);
   });
-}
+};
 
 db.open(function () {
   reset(function () {
@@ -347,6 +331,6 @@ got counts by first name!
 ]
 {% endhighlight %}-->
 
-See if you can implement your own `findById`, and `update` function, using what we have already built and these [docs](http://mongodb.github.com/node-mongodb-native/).
+See if you can implement your own `findById`, and `update` function, using what we have already built and these [the documentation for mongodb](http://mongodb.github.com/node-mongodb-native/).
 
-Once you've gotten through the lab, raise your hand and have an instructor unlock the next lab where you can play with IRC.
+Once you've gotten through the lab, raise your hand and have an instructor unlock the next lab where you can play with IRC!

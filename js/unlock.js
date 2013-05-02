@@ -1,10 +1,13 @@
 (function () {
 
   var socket = io.connect('http://nodelabs.herokuapp.com:80');
-  //var socket = io.connect('http://localhost:4040');
+  //var socket = io.connect('http://localhost:3000');
 
   socket.on("connect", function () {
-    socket.emit("username", whoami());
+    var username = whoami();
+    if (username) {
+      socket.emit("username", username);
+    }
   });
 
   socket.on("user", function (user) {
@@ -37,6 +40,7 @@
     e.preventDefault();
 
     var username = prompt("Pick a username!");
+    if (!username) return;
     $.cookie("username", username);
 
     $("#next .stop").show();

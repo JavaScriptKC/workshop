@@ -57,9 +57,11 @@ Next, let's add a file called `config.json`. Inside of `config.json` create an o
 {% highlight javascript %}
 {
   "connection": {
-    "dbName": "mongo-lab",
-    "host": "localhost",
-    "port": 27017
+    "dbName": "kcdc-mongodb-lab",
+    "host": "dharma.mongohq.com",
+    "port": 10049,
+    "username": "insecure",
+    "password": "database"
   }
 }
 {% endhighlight %}
@@ -82,7 +84,7 @@ var config  = require("./config.json").connection;
 ...
 
 var server = new Server(config.host, config.port);
-var db     = new Db(config.dbName, server, {safe:true});
+var db     = new Db(config.dbName, server, { safe:true });
 {% endhighlight %}
 
 ## Insert some data
@@ -94,7 +96,7 @@ Let's create an `insert` function that will pull the data from the users file an
 {% highlight javascript %}
 ...
 
-function insert(callback) {
+var insert = function (callback) {
   // get our users data
   var users = require("./data/users.json");
 
@@ -113,16 +115,22 @@ Now execute the `insert` function
 ...
 
 // be sure to open the connection to the database
-db.open(function () {
+db.open(function (err) {
+  if (err) throw err;
 
-  // insert our data
-  insert(function () {
+  db.authenticate(config.username, config.password, function (err) {
+    if (err) throw err;
 
-    // we inserted our users!
-    console.log("Inserted Users!");
+    // insert our data
+    insert(function (err) {
+      if (err) throw err;
 
-    // close the connection since we're done with it
-    db.close();
+      // we inserted our users!
+      console.log("Inserted Users!");
+
+      // close the connection since we're done with it
+      db.close();
+    });
   });
 }));
 {% endhighlight %}

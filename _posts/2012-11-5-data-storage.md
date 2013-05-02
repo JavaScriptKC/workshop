@@ -89,7 +89,7 @@ var db     = new Db(config.dbName, server, {safe:true});
 
 We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json). Download that file and save it to `./data`.
 
-Let's create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `users`.
+Let's create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `your-username-users`.
 
 {% highlight javascript %}
 ...
@@ -98,8 +98,8 @@ function insert(callback) {
   // get our users data
   var users = require("./data/users.json");
 
-  // get the "users collection"
-  db.collection("users", function (err, collection) {
+  // get the "your-username-users collection"
+  db.collection("your-username-users", function (err, collection) {
 
     // insert the users
     collection.insert(users, callback);
@@ -133,7 +133,7 @@ If you run this now, you should see the following output:
 Inserted Users!
 {% endhighlight%}
 
-And the `users` collection should be populated with our seed data.
+And the `your-username-users` collection should be populated with our seed data.
 
 ## Interact with the data
 
@@ -141,7 +141,7 @@ And the `users` collection should be populated with our seed data.
 ... // insert function is up here
 
 var remove = function (callback) {
-  db.collection("users", function (err, collection) {
+  db.collection("your-username-users", function (err, collection) {
     collection.remove(callback);
   });
 };
@@ -169,7 +169,7 @@ Okay, now let's add a method to `count` the number of users in mongo.
 ... // reset goes up here
 
 var count = function (callback) {
-  db.collection("users", function (err, collection) {
+  db.collection("your-username-users", function (err, collection) {
     collection.count(callback);
   });
 };
@@ -207,8 +207,8 @@ var insert = function (callback) {
   // get our users data
   var users = require("./data/users.json");
 
-  // get the "users collection"
-  db.collection("users", function (err, collection) {
+  // get the "your-username-users collection"
+  db.collection("your-username-users", function (err, collection) {
 
     // insert the users
     collection.insert(users, callback);
@@ -216,7 +216,7 @@ var insert = function (callback) {
 };
 
 var remove = function (callback) {
-  db.collection("users", function (err, collection) {
+  db.collection("your-username-users", function (err, collection) {
     collection.remove(callback);
   });
 };
@@ -228,7 +228,7 @@ var reset = function (callback) {
 };
 
 var count = function (callback) {
-  db.collection("users", function (err, collection) {
+  db.collection("your-username-users", function (err, collection) {
     collection.count(callback);
   });
 };
@@ -266,7 +266,7 @@ function reduce(key, values) {
 }
 
 return function _getCountByFirstName(cb) {
-  getCollection("users", function getUsersCollection(collection) {
+  getCollection("your-username-users", function getUsersCollection(collection) {
     collection.mapReduce(map, reduce, {out:{inline:1}}, intercept(cb));
   });
 };

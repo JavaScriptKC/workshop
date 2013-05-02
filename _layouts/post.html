@@ -33,16 +33,20 @@
     {{ content }}
 
     <div id="next">
-      <div class="stop">
-        Please complete the lab before continuing.
-      </div>
       {% if page.next %}
+        <div class="stop">
+          Please complete the lab before continuing.
+        </div>
         <div class="continue">
           <a href="{{ page.next.url }}">
             <!-- Please don't just skip through these, actually do the labs! -->
             Keep it up! Continue on to the next lab.
             <span>{{ page.next.title }}</span>
           </a>
+        </div>
+      {% else %}
+        <div class="completed">
+          That's it! You've completed the series of labs. Do you feel like a node.js expert? 
         </div>
       {% endif %}
     </div>

@@ -102,6 +102,7 @@ var insert = function (callback) {
 
   // get the "your-username-users collection"
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
 
     // insert the users
     collection.insert(users, callback);
@@ -150,6 +151,7 @@ And the `your-username-users` collection should be populated with our seed data.
 
 var remove = function (callback) {
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
     collection.remove(callback);
   });
 };
@@ -163,7 +165,8 @@ Let's also combine our insert and remove to create a `reset` function so we can 
 ... // remove function up here
 
 var reset = function (callback) {
-  remove(function () {
+  remove(function (err) {
+    if (err) return callback(err);
     insert(callback);
   });
 };
@@ -178,6 +181,7 @@ Okay, now let's add a method to `count` the number of users in mongo.
 
 var count = function (callback) {
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
     collection.count(callback);
   });
 };
@@ -190,11 +194,21 @@ And now we'll replace the original call to db.open with this so when we run the 
 {% highlight javascript %}
 ... // interaction functions up here
 
-db.open(function () {
-  reset(function () {
-    getCount(function (err, count) {
-      console.log("User count is %d", count);
-      db.close();
+db.open(function (err) {
+  if (err) throw err;
+
+  db.authenticate(config.username, config.password, function (err) {
+    if (err) throw err;
+  
+    reset(function (err) {
+      if (err) throw err;
+
+      count(function (err, numberOfUsers) {
+        if (err) throw err;
+
+        console.log("User count is %d", numberOfUsers);
+        db.close();
+      });
     });
   });
 });
@@ -217,6 +231,7 @@ var insert = function (callback) {
 
   // get the "your-username-users collection"
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
 
     // insert the users
     collection.insert(users, callback);
@@ -225,27 +240,40 @@ var insert = function (callback) {
 
 var remove = function (callback) {
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
     collection.remove(callback);
   });
 };
 
 var reset = function (callback) {
-  remove(function () {
+  remove(function (err) {
+    if (err) return callback(err);
     insert(callback);
   });
 };
 
 var count = function (callback) {
   db.collection("your-username-users", function (err, collection) {
+    if (err) return callback(err);
     collection.count(callback);
   });
 };
 
-db.open(function () {
-  reset(function () {
-    getCount(function (err, count) {
-      console.log("User count is %d", count);
-      db.close();
+db.open(function (err) {
+  if (err) throw err;
+
+  db.authenticate(config.username, config.password, function (err) {
+    if (err) throw err;
+
+    reset(function (err) {
+      if (err) throw err;
+
+      count(function (err, numberOfUsers) {
+        if (err) throw err;
+        
+        console.log("User count is %d", numberOfUsers);
+        db.close();
+      });
     });
   });
 });

@@ -17,10 +17,7 @@ $ npm --version
 {% endhighlight %}
 
 <div id="next">
-  <div class="userprompt">
-    <a href="#">Let's get started!</a>
-  </div>
-  <div class="continue">
+  <div class="userprompt continue">
     <!-- Please don't just skip through these, actually do the labs! -->
     <a href="{{ site.posts.last.url }}">Awesome, let's get started!<span>{{ site.posts.last.title }}</span></a>
   </div>

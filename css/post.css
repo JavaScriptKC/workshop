@@ -40,9 +40,8 @@ pre code { border: 0 none; padding: 0; }
 #header img { height: 150px; }
 
 #next { margin-top: 50px; }
-#next .continue { display: none; }
 
-#next .stop, #next .completed {
+#next .completed {
   text-align: center;
   background-color: #c6c6c6;
   border-radius: 5px;

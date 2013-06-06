@@ -37,12 +37,12 @@
   var promptForUsername = function (e) {
     e.preventDefault();
 
-    var username = prompt("Pick a username!");
+    var username = prompt("Whats your name? This helps us track your progress.");
+    
     if (!username) return;
+
     $.cookie("username", username);
 
-    $("#next .stop").show();
-    $("#next .userprompt").hide();
     socket.emit("username", whoami());
   };
 
@@ -73,8 +73,12 @@
   };
 
   $(document).ready(function () {
-    $("#next .userprompt a").click(promptForUsername);
-    $("a.unlock").click(unlockNextLab);
+    if (!$.cookie("username")) {
+      $("#next .userprompt a").click(promptForUsername); 
+    }
+    
+    $("#next .continue a").click(unlockNextLab);
+
     $("code").each(injectYourUsername);
   });
 

@@ -55,8 +55,6 @@
   };
 
   var unlockNextLab = function (e) {
-    e.preventDefault();
-
     var thisPage = window.location.pathname;
     var url = "http://nodelabs.herokuapp.com/" + encodeURIComponent($.cookie("username")) + thisPage;
     

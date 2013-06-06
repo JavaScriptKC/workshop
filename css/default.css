@@ -21,14 +21,6 @@ pre {
 #header img { height: 150px; font-size: 2em; margin-bottom: 2em; }
 
 #next { margin-top: 50px; }
-#next .continue, #next .userprompt { display: none; }
-
-#next .stop {
-  text-align: center;
-  background-color: #3E4037;
-  border-radius: 5px;
-  padding: 10px 20px;
-}
 
 #next a { 
   display: block;

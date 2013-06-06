@@ -17,9 +17,6 @@ $ npm --version
 {% endhighlight %}
 
 <div id="next">
-  <div class="stop">
-    Please await further instruction.
-  </div>
   <div class="userprompt">
     <a href="#">Let's get started!</a>
   </div>

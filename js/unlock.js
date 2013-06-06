@@ -12,12 +12,10 @@
 
   socket.on("user", function (user) {
     saveToCache("user", user);
-    updateUI();
   });
 
   socket.on("settings", function (settings) {
     saveToCache("settings", settings);
-    updateUI();
   });
 
   var whoami = function () {
@@ -56,34 +54,6 @@
     return JSON.parse($.cookie(key) || "{}");
   };
 
-  var updateUI = function () {
-    var thisPage = window.location.pathname;
-    var settings = loadFromCache("settings");
-    var user = loadFromCache("user");
-    var canContinue = false;
-
-    if (!$.cookie("username")) return;
-
-    if (thisPage == "/" || thisPage == "index.html") {
-      canContinue = settings.allowFirstLab;
-    }
-    else {
-      canContinue = user.completed && user.completed[thisPage];
-    }
-
-    var stop = $("#next .stop");
-    var next = $("#next .continue");
-
-    if (canContinue) {
-      stop.hide();
-      next.show();
-    }
-    else {
-      stop.show();
-      next.hide();
-    }
-  };
-
   var unlockNextLab = function (e) {
     e.preventDefault();
 
@@ -106,8 +76,6 @@
     $("#next .userprompt a").click(promptForUsername);
     $("a.unlock").click(unlockNextLab);
     $("code").each(injectYourUsername);
-
-    updateUI();
   });
 
 })();

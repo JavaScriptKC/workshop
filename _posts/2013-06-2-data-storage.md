@@ -368,5 +368,3 @@ got counts by first name!
 {% endhighlight %}-->
 
 See if you can implement your own `findById`, and `update` function, using what we have already built and [the documentation for mongodb](http://mongodb.github.com/node-mongodb-native/).
-
-Once you've gotten through the lab, raise your hand and have an instructor unlock the next lab where you can play with IRC!

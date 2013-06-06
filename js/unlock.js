@@ -28,9 +28,6 @@
       if (window.location.pathname != "/") {
         return window.location.href = "/";
       }
-
-      $("#next .stop").hide();
-      $("#next .userprompt").show();
     }
   };
 
@@ -39,11 +36,14 @@
 
     var username = prompt("Whats your name? This helps us track your progress.");
     
-    if (!username) return;
+    if (!username || username.trim() === '')  
+      return;
 
     $.cookie("username", username);
-
-    socket.emit("username", whoami());
+    var location = $(this).attr('href');
+    socket.emit("username", username, function () {
+      document.location.href = location;
+    });
   };
 
   var saveToCache = function (key, data) {
@@ -54,16 +54,9 @@
     return JSON.parse($.cookie(key) || "{}");
   };
 
-  var unlockNextLab = function (e) {
-    var thisPage = window.location.pathname;
-    var url = "http://nodelabs.herokuapp.com/" + encodeURIComponent($.cookie("username")) + thisPage;
-    
-    $.ajax(url, { dataType: "jsonp" });
-  };
-
   var injectYourUsername = function (index, element) {
     var html = $(element).html();
-    var replaced = html.replace(/your-username/g, $.cookie("username"));
+    var replaced = html.replace(/your-username/g, whoami());
 
     if (html != replaced) {
       $(element).html(replaced);
@@ -74,8 +67,12 @@
     if (!$.cookie("username")) {
       $("#next .userprompt a").click(promptForUsername); 
     }
-    
-    $("#next .continue a").click(unlockNextLab);
+    else {   
+      var thisPage = window.location.pathname;
+      var url = "http://nodelabs.herokuapp.com/" + encodeURIComponent(whoami()) + thisPage;
+      
+      $.ajax(url, { dataType: "jsonp" });
+    }
 
     $("code").each(injectYourUsername);
   });

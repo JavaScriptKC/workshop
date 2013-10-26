@@ -64,3 +64,9 @@ pre code { border: 0 none; padding: 0; }
   display: block;
   padding-top: 5px;
 }
+
+#footer {
+  margin-top: 10px;
+  color: #333;
+  padding: 10px;
+}

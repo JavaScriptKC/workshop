@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Node.js REPL"
+title: "Essential software"
 author: NodeKC
 tags:
 ---

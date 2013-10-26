@@ -38,3 +38,9 @@ pre {
   display: block;
   padding-top: 5px;
 }
+
+#footer {
+  margin: 0 auto;
+  color: #333;
+  padding: 10px;
+}

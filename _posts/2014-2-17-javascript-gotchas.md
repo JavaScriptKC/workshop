@@ -67,7 +67,7 @@ This example is supposed to add two numbers together after 10 milliseconds. What
 
 If there's anything you'll walk away from after this lab I hope you'll no longer write bugs that involve ```this```.
 
-The value of ```this``` is the object that a function is defined on. Inner functions or function calls that aren't a part of the object will have the default object set to ```this```. The default object in browsers is ```window``` and in Node.js is ```process```. 
+The value of ```this``` is the object that a function is defined on. Inner functions or function calls that aren't a part of the object will have the default object set to ```this```. The default object in browsers is ```window``` and in Node.js is ```global```. 
 
 {% highlight javascript %}
 var obj = { a: "Example" };
@@ -102,7 +102,7 @@ var o2 = new ctor('test2');
 o2.print(); // => test2
 {% endhighlight %}
 
-So, you've seen the default behavior of how JavaScript handles the ```this``` keyword. The value of ```this``` can be controlled in a function call by using two methods available on Function.prototype ```apply``` and ```call```. Both of these methods invoke the function they're called on with ```this``` as set to the first argument. Here's an example: 
+So, you've seen the default behavior of how JavaScript handles the ```this``` keyword. The value of ```this``` can be controlled in a function call via a few methods available on Function.prototype ```apply```, ```call```, and ```bind```. Each of these methods allow you to modify the value of this when the function is called. The first two options (apply and call) invoke the function immediately, whereas the third (bind) provides a new function with ```this``` bound. The value of ```this``` is the first argument to each of these methods. Here's an example: 
 
 {% highlight javascript %}
 var obj = { a: "Example" };
@@ -112,8 +112,11 @@ var printer = function () {
    console.log(this.a);
 };
 
+var newPrinter = printer.bind(obj); // Not immediately invoked
+
+newPrinter();       // => "Example"
 printer.apply(obj); // => "Example"
-printer.call(obj); // => "Example"
+printer.call(obj);  // => "Example"
 {% endhighlight %}
 
 The difference between ```apply``` and ```call``` is that apply allows you to invoke the function with the arguments as an array; ```call`` requires the parameters to be listed explicitly.
@@ -156,4 +159,29 @@ function example() {
 }
  
 example();
+{% endhighlight %}
+
+Using JavaScripts strict mode will prevent you from defining properties on the global object. There are other advantages to using strict mode, but this one is my favorite. Strict mode is applied within an execution context instead of over the entire JavaScript VM. To enable strict mode simple include the string ```"use strict";``` at the top of an execution context. Here's an example of using strict mode just for a single function.
+
+{% highlight javascript %}
+var strictFunction = function () {
+  "use strict";
+  x = 1; // => Throws error because of strict mode! 
+};
+
+var notSoStrictFunction = function () {
+   a = 1; // Still assigns a to the global object because "use strict" has not been applied to this execution context. No error is thrown.
+};
+
+{% endhighlight %}
+
+# ```==``` vs ```===```
+
+{% highlight javascript %}
+var input = "10";
+ 
+if (input == 10) { 
+   console.log(input * 5);
+   console.log(input + 5); 
+}
 {% endhighlight %}

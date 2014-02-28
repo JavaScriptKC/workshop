@@ -222,11 +222,11 @@ expect fork
 # Log file path.
 # env LOG="/var/log/my-application.log"
 
-env NODE_BIN_DIR=""
-env NODE_PATH=""
-env APPLICATION_DIRECTORY=""
-env APPLICATION_START=""
-env LOG=""
+env NODE_BIN_DIR="/usr/bin/"
+env NODE_PATH="/usr/lib/node_modules"
+env APPLICATION_DIRECTORY="/home/ubuntu/node_app"
+env APPLICATION_START="server.js"
+env LOG="/var/log/node_app.log"
 
 script
     PATH=$NODE_BIN_DIR:$PATH

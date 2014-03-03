@@ -7,7 +7,7 @@ tags:
 
 # Storing Some Data
 
-Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you'll need access to an instance of mongodb to proceed with this lab.
+Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you will need access to an instance of mongodb to proceed with this lab.
 
 * [Starting the project](#starting_the_project)
 * [Get everything in place](#get_everything_in_place)
@@ -52,7 +52,7 @@ We went ahead and assigned the Db and Server variables to the respective `mongod
 * Server: Represents the mongodb server
 * Db:     Represents a database on ther server
 
-Next, let's add a file called `config.json`. Inside of `config.json` create an object with a member object called `"connection"` like the following.
+Next, let\'s add a file called `config.json`. Inside of `config.json` create an object with a member object called `"connection"` like the following.
 
 {% highlight javascript %}
 {
@@ -66,7 +66,7 @@ Next, let's add a file called `config.json`. Inside of `config.json` create an o
 }
 {% endhighlight %}
 
-**Note:** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.  
+**Note:** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.
 
 Next require `config.json` so we can get our connection information.
 
@@ -174,7 +174,7 @@ var reset = function (callback) {
 ... // db.open down here
 {% endhighlight %}
 
-Okay, now let's add a method to `count` the number of users in mongo.
+Okay, now let\'s add a method to `count` the number of users in mongo.
 
 {% highlight javascript %}
 ... // reset goes up here
@@ -199,7 +199,7 @@ db.open(function (err) {
 
   db.authenticate(config.username, config.password, function (err) {
     if (err) throw err;
-  
+
     reset(function (err) {
       if (err) throw err;
 
@@ -270,7 +270,7 @@ db.open(function (err) {
 
       count(function (err, numberOfUsers) {
         if (err) throw err;
-        
+
         console.log("User count is %d", numberOfUsers);
         db.close();
       });
@@ -313,9 +313,9 @@ What is that function wrapped in parens? That is called an `IIFE` (Immediatly In
 
 **Note** the `map` and `reduce` functions are not executed in `node` they are actually serialzed by calling the `toString` and sent to `mongo` to execute on the server. So you **cannot** use any variables that would normally be available (i.e. closure varibles).
 
-Notice how we pass in `{out : {inline : 1}}` this tells mongo to do the map reduce in memory. 
+Notice how we pass in `{out : {inline : 1}}` this tells mongo to do the map reduce in memory.
 
-Now let's use it and see what we get!
+Now let\'s use it and see what we get!
 
 {% highlight javascript %}
 db.open(intercept(function () {

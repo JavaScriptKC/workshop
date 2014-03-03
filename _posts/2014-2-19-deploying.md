@@ -86,7 +86,7 @@ node server.js&
 curl -I localhost:3000
 {% endhighlight %}
 
-Now kill the process and let's continue.
+Now kill the process and let\'s continue.
 
 {% highlight bash %}
 killall node
@@ -134,7 +134,7 @@ There's a sleight of hand going on in this example. It looks as though all child
 
 ## Multiple processes
 
-Let's see how we can get another process up and running. This time we're going to change the port specification line to look at the environment. It's recommended to store the port configuration for a node process in the environment for the process. If you haven't read about 12 factor applications now's a good time. [12 factor applications](http://12factor.net/) is a highly recommended starting point for creating scalable applications.
+Let's see how we can get another process up and running. This time we're going to change the port specification line to look at the environment. It's recommended to store the port configuration for a node process in the environment for the process. If you have not read about 12 factor applications now's a good time. [12 factor applications](http://12factor.net/) is a highly recommended starting point for creating scalable applications.
 
 Change the port configuration line to this.
 
@@ -179,7 +179,7 @@ Now we can use forever to ensure our node server continues running.
 PORT=4000 forever start server.js
 {% endhighlight %}
 
-Now, let's find the process id of the newly started process and kill it.
+Now, let\'s find the process id of the newly started process and kill it.
 
 {% highlight bash %}
 ps -ax | grep node

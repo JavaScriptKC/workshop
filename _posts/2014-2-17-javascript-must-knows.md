@@ -176,15 +176,32 @@ var notSoStrictFunction = function () {
    a = 1; // Still assigns a to the global object because "use strict" has not been applied to this execution context. No error is thrown.
 };
 
+strictFunction(); //throws error because x has not been defined
+notSoStrictFunction(); // No problem defining a on the global object
 {% endhighlight %}
 
-# ```==``` vs ```===```
+# Use ```===``` over ```==```
+
+It\'s highly advised to always use the `===` and `!==` (read as strictly (not) equals) equality operators. The difference between `===` and `==` is that the former enforces that the types of the objects match, so a string can never equal a number. Whereas `==` will return true for `1 == "1"`.
 
 {% highlight javascript %}
+// Consider taking input from an input field. This will be a string.
 var input = "10";
 
+// Compare the string "10" to the number 10. Because of == the number is coerced to a string.
 if (input == 10) {
    console.log(input * 5);
    console.log(input + 5);
 }
+
+if (input === 10) {
+   console.log('this will not be reached');
+}
+
+if ((typeof input == typeof 10) && (input == 10)) {
+   console.log('this is essentially the same as ===');
+}
+
 {% endhighlight %}
+
+Sometimes it\'s okay to use the double equality but be aware that the objects will be coerced to a common type before performing the equality comparison.

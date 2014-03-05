@@ -10,10 +10,10 @@ To ensure that you have node.js installed, open a command prompt and make sure t
 
 {% highlight bash %}
 $ node --version
-v0.10.5
+v0.10.13
 
 $ npm --version
-1.2.18
+1.3.2
 {% endhighlight %}
 
 <div id="next">

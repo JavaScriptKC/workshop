@@ -203,6 +203,8 @@ Re-run the process grep and you should see a new process id assigned to the node
 ## Upstart
 [This script was borrowed from here](https://www.exratione.com/2013/02/nodejs-and-forever-as-a-service-simple-upstart-and-init-scripts-for-ubuntu/)
 
+Place this script in `/etc/init/node_app.conf`.
+
 {% highlight bash %}
 #!upstart
 
@@ -241,12 +243,33 @@ pre-stop script
 end script
 {% endhighlight %}
 
+Now to start the process enter this command:
 
-## Cluster
+{% highlight bash %}
+> sudo start node_app
+{% endhighlight %}
 
-# Reverse proxy via nginx
-- basic configuration for a single node process or straight to a cluster?
-- ssl
-- discuss HAProxy
+Verify the process is up and running:
 
-# Redis and MongoDB
+{% highlight javascript %}
+> ps ax | grep node
+{% endhighlight %}
+
+Stopping is simple too:
+
+{% highlight bash %}
+> sudo stop node_app
+{% endhighlight %}
+
+Now whenever the server restarts it\'ll automatically start the node process.
+
+{% highlight bash %}
+> sudo reboot
+{% endhighlight %}
+
+After everything has come back up run our simple process verification again. At this point we know how to set up a node process and keep it alive in a production environment. We could stop here and serve requests directly from node. However, many production environments accept requests by means of a [reverse proxy](http://en.wikipedia.org/wiki/Reverse_proxy).
+
+## Reverse proxy and SSL termination via nginx or HAProxy
+
+Most production environments proxy requests through a termination process. This process is meant to terminate SSL and route traffic to appropriate node process. It also is used to balance traffic and automatically respond to nodes that crash. A popular choice for performing proxy and SSL termination is [nginx](http://nginx.org) or [HAProxy](http://haproxy.1wt.eu/). Configuration of each of these ranges from straight forward to extremely complex. Some configurations even use message queuing systems like [RabbitMQ](https://www.rabbitmq.com/) to place all incoming requests for a Node process to pull off and serve. Unfortunately, configuration of these systems is out of scope for this lab.
+

@@ -301,8 +301,8 @@ function reduce(key, values) {
 }
 
 return function _getCountByFirstName(cb) {
-  getCollection("nodelabs-users", function getUsersCollection(collection) {
-    collection.mapReduce(map, reduce, {out:{inline:1}}, intercept(cb));
+  db.collection("nodelabs-users", function getUsersCollection (collection) {
+    collection.mapReduce(map, reduce, {out:{inline:1}}, cb);
   });
 };
 }());
@@ -317,14 +317,14 @@ Notice how we pass in `{out : {inline : 1}}` this tells mongo to do the map redu
 Now let\'s use it and see what we get!
 
 {% highlight javascript %}
-db.open(intercept(function () {
+db.open(function () {
   reset(function () {
     getCountByFirstName(function (counts) {
       console.log("got counts by first name!");
       console.log(JSON.stringify(counts, null, 4));
     });
   });
-}));
+});
 {% endhighlight %}
 
 Your output should look like this.

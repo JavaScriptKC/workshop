@@ -213,7 +213,7 @@ Re-run the grep command above and you should see a new process id assigned to th
 
 
 ## Upstart
-[This script was borrowed from here](https://www.exratione.com/2013/02/nodejs-and-forever-as-a-service-simple-upstart-and-init-scripts-for-ubuntu/)
+This script was borrowed from [Ex Ratione's blog](https://www.exratione.com/2013/02/nodejs-and-forever-as-a-service-simple-upstart-and-init-scripts-for-ubuntu/)
 
 Place this script in `/etc/init/node_app.conf`.
 

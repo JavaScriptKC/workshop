@@ -5,10 +5,13 @@ author: NodeKC
 tags:
 ---
 
-# Introduction
+# Setting up a production ready Node.js process
+
+## Introduction
+
 Node scales by the process. This is achieved by setting up multiple Node processes that accept connections on a non standard port and setting up a reverse proxy to route connections. In this lab you will learn how to stand up Node processes in fault tolerant way. These instructions have been designed with the use of an Ubuntu AMI from AWS (amazon web services).
 
-# Node Environment
+## Node Environment
 
 Log into your EC2 dashboard and create a new virtual machine to install Node. You can do this by going to:
 
@@ -51,7 +54,7 @@ Verify your installation.
 node -v
 {% endhighlight %}
 
-# Setting up a Node process
+## Setting up a Node process
 
 Let\'s start by creating a simple Node web application using Express. Express is a framework for creating web applications. Now, from your home directory on the new virtual machine:
 
@@ -103,7 +106,7 @@ Now kill the process and let\'s continue.
 killall node
 {% endhighlight %}
 
-## Cluster
+### Cluster
 
 We\'ll start scaling Node using the cluster module that\'s part of the core library. As of Node.js v0.10.0 the cluster module doesn\'t evenly distribute traffic to child processes. This is because Node leaves the routing of incoming connections to the operating system. Unfortunately, Unix based operating systems do a poor job of distributing new connections amongst child processes. In part this is because it\'s trying to be efficient by handing off the request to an already foreground process, which in this case is the most recently used. Windows is not affected by this issue because it uses a different scheduling mechanism. In the next stable version of Node the distribution of incoming connections will be handled by Node and use a round-robin approach by default. Despite the fact that it\'s not a great choice to use at this time we\'re going to cover how it works.
 

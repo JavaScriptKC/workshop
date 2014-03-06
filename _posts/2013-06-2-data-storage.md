@@ -7,7 +7,7 @@ tags:
 
 # Storing Some Data
 
-Most applications just aren't useful without storing some data. Let's use mongodb to save some stuff. Oh yeah, you will need access to an instance of mongodb to proceed with this lab.
+Most applications just aren\'t useful without storing some data. Let\'s use mongodb to save some stuff. You will need access to an instance of mongodb to proceed with this lab.
 
 * [Starting the project](#starting_the_project)
 * [Get everything in place](#get_everything_in_place)
@@ -17,11 +17,11 @@ Most applications just aren't useful without storing some data. Let's use mongod
 
 ## Starting the project
 
-Create a new empty directory called `mongo-lab` for this lab. Inside the `mongo-lab` directory run `npm init` and feel free to skip through all the questions with the defaults. This will create a new `package.json` file for the project. `package.json` tells a reader about your project and defines dependencies your project has on other modules. Next, run `npm install --save mongodb`. This will download the `mongodb` module and save it to the `package.json` file we just created.
+Create a new empty directory called `mongo-lab`. Inside the `mongo-lab` directory run `npm init` and feel free to skip through all the questions with the defaults. This will create a new `package.json` file for the project. `package.json` tells a reader about your project and defines dependencies your project has on other modules. Next, run `npm install --save mongodb`. This will download the `mongodb` module and save it to the `package.json` file we just created.
 
-This is the proper way to start all Node.js projects. If you're using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary files to develop and run your project.
+This is the proper way to start all Node.js projects. If you\'re using source control, `package.json` should be added to it. Then, if someone were to clone your repository, they would simply run `npm install` and NPM would download all of the necessary dependencies to develop and run your project.
 
-After all of that `package.json` should look sorta like this:
+After all of that `package.json` should look like this:
 
 {% highlight javascript %}
 {
@@ -40,7 +40,7 @@ After all of that `package.json` should look sorta like this:
 
 ## Get everything in place
 
-Create a file named `index.js`. This will be where we do all of the fun stuff. Inside `index.js` go ahead and `require()` the `mongodb` module we installed earlier.
+Create a file named `index.js`. Inside `index.js` go ahead and `require()` the `mongodb` module we installed earlier.
 
 {% highlight javascript %}
 var mongodb = require('mongodb');
@@ -50,7 +50,7 @@ var Server  = mongodb.Server;
 
 We went ahead and assigned the Db and Server variables to the respective `mongodb` exports, too.
 * Server: Represents the mongodb server
-* Db:     Represents a database on ther server
+* Db:     Represents a database on the server
 
 Next, let\'s add a file called `config.json`. Inside of `config.json` create an object with a member object called `"connection"` like the following.
 
@@ -66,7 +66,7 @@ Next, let\'s add a file called `config.json`. Inside of `config.json` create an 
 }
 {% endhighlight %}
 
-**Note:** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later.
+**Note:** You could put this in your `index.js` file but it is good practice to keep configuration variables out of your source so you can easily change them later and potentially exclude them from source control.
 
 Next require `config.json` so we can get our connection information.
 
@@ -91,7 +91,7 @@ var db     = new Db(config.dbName, server, { safe:true });
 
 We are going to be inserting a list of users into this database. The data can be found [here](https://raw.github.com/nodekc/workshop/master/examples/mongo/assets/users.json). Download that file and save it to `./data`.
 
-Let's create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `your-username-users`.
+Let\'s create an `insert` function that will pull the data from the users file and insert it into a mongo collection called `nodelabs-users`.
 
 {% highlight javascript %}
 ...
@@ -100,8 +100,8 @@ var insert = function (callback) {
   // get our users data
   var users = require("./data/users.json");
 
-  // get the "your-username-users collection"
-  db.collection("your-username-users", function (err, collection) {
+  // get the "nodelabs-users collection"
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
 
     // insert the users
@@ -129,7 +129,6 @@ db.open(function (err) {
       // we inserted our users!
       console.log("Inserted Users!");
 
-      // close the connection since we're done with it
       db.close();
     });
   });
@@ -142,7 +141,7 @@ If you run this now, you should see the following output:
 Inserted Users!
 {% endhighlight%}
 
-And the `your-username-users` collection should be populated with our seed data.
+And the `nodelabs-users` collection should be populated with our seed data.
 
 ## Interact with the data
 
@@ -150,7 +149,7 @@ And the `your-username-users` collection should be populated with our seed data.
 ... // insert function is up here
 
 var remove = function (callback) {
-  db.collection("your-username-users", function (err, collection) {
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
     collection.remove(callback);
   });
@@ -159,7 +158,7 @@ var remove = function (callback) {
 ... // db.open is down here
 {% endhighlight %}
 
-Let's also combine our insert and remove to create a `reset` function so we can keep messing with the data.
+Combine our insert and remove to create a `reset` function so we can easily wipe and replace our data.
 
 {% highlight javascript %}
 ... // remove function up here
@@ -174,13 +173,13 @@ var reset = function (callback) {
 ... // db.open down here
 {% endhighlight %}
 
-Okay, now let\'s add a method to `count` the number of users in mongo.
+Add a method to `count` the number of users in our database.
 
 {% highlight javascript %}
 ... // reset goes up here
 
 var count = function (callback) {
-  db.collection("your-username-users", function (err, collection) {
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
     collection.count(callback);
   });
@@ -189,7 +188,7 @@ var count = function (callback) {
 ... // and db.open here
 {% endhighlight %}
 
-And now we'll replace the original call to db.open with this so when we run the program it'll reset the data and invoke the count method.
+Replace the original call to db.open with this so when we run the program it\'ll reset the data and invoke the count method.
 
 {% highlight javascript %}
 ... // interaction functions up here
@@ -214,7 +213,7 @@ db.open(function (err) {
 });
 {% endhighlight %}
 
-And at the end of the day, this is what everything should look like:
+This is what everything should look like:
 
 {% highlight javascript %}
 var mongodb = require('mongodb');
@@ -229,8 +228,8 @@ var insert = function (callback) {
   // get our users data
   var users = require("./data/users.json");
 
-  // get the "your-username-users collection"
-  db.collection("your-username-users", function (err, collection) {
+  // get the "nodelabs-users collection"
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
 
     // insert the users
@@ -239,7 +238,7 @@ var insert = function (callback) {
 };
 
 var remove = function (callback) {
-  db.collection("your-username-users", function (err, collection) {
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
     collection.remove(callback);
   });
@@ -253,7 +252,7 @@ var reset = function (callback) {
 };
 
 var count = function (callback) {
-  db.collection("your-username-users", function (err, collection) {
+  db.collection("nodelabs-users", function (err, collection) {
     if (err) return callback(err);
     collection.count(callback);
   });
@@ -285,9 +284,9 @@ When this is executed we should see something like this:
 User count is 1234
 {% endhighlight %}
 
-<!--## More advanced Mongo interactions
+## More advanced Mongo interactions
 
-13. Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use the [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce).
+Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce).
 
 {% highlight javascript %}
 var getCountByFirstName = (function getCountByFirstName() {
@@ -302,16 +301,16 @@ function reduce(key, values) {
 }
 
 return function _getCountByFirstName(cb) {
-  getCollection("your-username-users", function getUsersCollection(collection) {
+  getCollection("nodelabs-users", function getUsersCollection(collection) {
     collection.mapReduce(map, reduce, {out:{inline:1}}, intercept(cb));
   });
 };
 }());
 {% endhighlight %}
 
-What is that function wrapped in parens? That is called an `IIFE` (Immediatly Invoked Function Expression). This allows us to keep `map` and `reduce` private while exposing the `_getCountByFirstName` function. So `getCountByFirstName` is actually assigned to `_getCountByFirstName` while not exposing the private `map` and `reduce` functions.
+What is that function wrapped in parens? That is called an `IIFE` (Immediately Invoked Function Expression). This allows us to keep `map` and `reduce` private while exposing the `_getCountByFirstName` function. So `getCountByFirstName` is actually assigned to `_getCountByFirstName` while not exposing the private `map` and `reduce` functions.
 
-**Note** the `map` and `reduce` functions are not executed in `node` they are actually serialzed by calling the `toString` and sent to `mongo` to execute on the server. So you **cannot** use any variables that would normally be available (i.e. closure varibles).
+**Note** the `map` and `reduce` functions are not executed in `node` they are actually serialzed by calling `toString` and sent to `mongo` to execute on the server. So you **cannot** use any variables that would normally be available (i.e. closure variables).
 
 Notice how we pass in `{out : {inline : 1}}` this tells mongo to do the map reduce in memory.
 

@@ -364,6 +364,6 @@ got counts by first name!
     "value": 2
   }
 ]
-{% endhighlight %}-->
+{% endhighlight %}
 
 See if you can implement your own `findById`, and `update` function, using what we have already built and [the documentation for mongodb](http://mongodb.github.com/node-mongodb-native/).

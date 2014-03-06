@@ -7,7 +7,7 @@ tags:
 
 # JavaScript must-knows
 
-JavaScript is a language that many developers are familiar with but lack a deep understanding. The language lends itself to new programmers, in part, because of its simple syntax. Many fundamental concepts and features of the language can be overlooked with a simple procedural approach. The goal of this lab is to give you a better understanding of some core concepts and important language features to understand about JavaScript.
+JavaScript is a language that many developers are familiar with but lack a deep understanding. The language lends itself to new programmers, in part, because of its simple syntax. Many fundamental concepts and features of the language can be overlooked with a simple procedural approach. The goal of this lab is to give you a better understanding of some core concepts and important language features of JavaScript.
 
 ## What is ```this```?
 

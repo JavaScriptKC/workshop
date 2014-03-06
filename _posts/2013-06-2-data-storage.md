@@ -57,11 +57,9 @@ Next, let\'s add a file called `config.json`. Inside of `config.json` create an 
 {% highlight javascript %}
 {
   "connection": {
-    "dbName": "kcdc-mongodb-lab",
-    "host": "dharma.mongohq.com",
-    "port": 10049,
-    "username": "insecure",
-    "password": "database"
+    "dbName": "nodelabs-users",
+    "host": "localhost",
+    "port": 27017
   }
 }
 {% endhighlight %}
@@ -118,21 +116,16 @@ Now execute the `insert` function
 // be sure to open the connection to the database
 db.open(function (err) {
   if (err) throw err;
+ // insert our data
+ insert(function (err) {
+   if (err) throw err;
 
-  db.authenticate(config.username, config.password, function (err) {
-    if (err) throw err;
+   // we inserted our users!
+   console.log("Inserted Users!");
 
-    // insert our data
-    insert(function (err) {
-      if (err) throw err;
-
-      // we inserted our users!
-      console.log("Inserted Users!");
-
-      db.close();
-    });
-  });
-}));
+   db.close();
+ });
+});
 {% endhighlight %}
 
 If you run this now, you should see the following output:
@@ -192,24 +185,16 @@ Replace the original call to db.open with this so when we run the program it\'ll
 
 {% highlight javascript %}
 ... // interaction functions up here
-
 db.open(function (err) {
-  if (err) throw err;
-
-  db.authenticate(config.username, config.password, function (err) {
-    if (err) throw err;
-
-    reset(function (err) {
+   if (err) throw err;
+   reset(function (err) {
       if (err) throw err;
-
       count(function (err, numberOfUsers) {
-        if (err) throw err;
-
-        console.log("User count is %d", numberOfUsers);
-        db.close();
+         if (err) throw err;
+         console.log("User count is %d", numberOfUsers);
+         db.close();
       });
-    });
-  });
+   });
 });
 {% endhighlight %}
 
@@ -259,78 +244,63 @@ var count = function (callback) {
 };
 
 db.open(function (err) {
-  if (err) throw err;
-
-  db.authenticate(config.username, config.password, function (err) {
-    if (err) throw err;
-
-    reset(function (err) {
+   if (err) throw err;
+   reset(function (err) {
       if (err) throw err;
-
       count(function (err, numberOfUsers) {
-        if (err) throw err;
-
-        console.log("User count is %d", numberOfUsers);
-        db.close();
+         if (err) throw err;
+         console.log("User count is %d", numberOfUsers);
+         db.close();
       });
-    });
-  });
+   });
 });
 {% endhighlight %}
 
 When this is executed we should see something like this:
 
 {% highlight bash %}
-User count is 1234
+User count is 1000
 {% endhighlight %}
 
 ## More advanced Mongo interactions
 
-Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce).
+Next lets add a function that aggregates the users by the first letter in their `firstName` property. To do this we will need to use [MapReduce](http://www.mongodb.org/display/DOCS/MapReduce). Replace your count function above that includes `db.open` with the following:
 
 {% highlight javascript %}
-var getCountByFirstName = (function getCountByFirstName() {
-function map() {
-  if (this.firstName) {
-    emit(this.firstName.charAt(0), 1);
-  }
-}
+db.open(function (err) {
 
-function reduce(key, values) {
-  return values.length;
-}
+   var getCountByFirstName = (function getCountByFirstName() {
+      var map = function () {
+         emit(this.firstName.charAt(0), 1);
+      };
 
-return function _getCountByFirstName(cb) {
-  db.collection("nodelabs-users", function getUsersCollection (collection) {
-    collection.mapReduce(map, reduce, {out:{inline:1}}, cb);
-  });
-};
-}());
+      var reduce = function (key, values) {
+         return values.length;
+      };
+
+      return function _getCountByFirstName (cb) {
+         db.collection("nodelabs-users", function getUsersCollection (err, collection) {
+            if(err) throw err;
+            collection.mapReduce(map.toString(), reduce.toString(), {out:{inline:1}}, cb);
+         });
+      };
+   }());
+
+   getCountByFirstName(function (error, results) {
+      console.log(JSON.stringify(results, null, 4));
+   });
+});
 {% endhighlight %}
 
 What is that function wrapped in parens? That is called an `IIFE` (Immediately Invoked Function Expression). This allows us to keep `map` and `reduce` private while exposing the `_getCountByFirstName` function. So `getCountByFirstName` is actually assigned to `_getCountByFirstName` while not exposing the private `map` and `reduce` functions.
 
-**Note** the `map` and `reduce` functions are not executed in `node` they are actually serialzed by calling `toString` and sent to `mongo` to execute on the server. So you **cannot** use any variables that would normally be available (i.e. closure variables).
+**Note** the `map` and `reduce` functions are not executed in `node` they are actually serialized by calling `toString` and sent to `mongo` to execute on the server. So you **cannot** use any variables that would normally be available (i.e. closure variables).
 
 Notice how we pass in `{out : {inline : 1}}` this tells mongo to do the map reduce in memory.
-
-Now let\'s use it and see what we get!
-
-{% highlight javascript %}
-db.open(function () {
-  reset(function () {
-    getCountByFirstName(function (counts) {
-      console.log("got counts by first name!");
-      console.log(JSON.stringify(counts, null, 4));
-    });
-  });
-});
-{% endhighlight %}
 
 Your output should look like this.
 
 {% highlight javascript %}
-got counts by first name!
 [
   {
     "_id": "A",
